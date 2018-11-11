@@ -35,21 +35,6 @@ class Logger {
         return self::logExtended('createNotice', $message, $description, $data, $code, $file, $line);
     }
     
-    public function logExtended(
-        $methodName, $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null
-    ) {
-        $log = Factory::instance()->createModel('ModelLog');
-        $request = Registry::get('request');
-        $result = $log->$methodName($message, $description, $data, $code, $file, $line, $request->url);
-        if ($result) {
-            $log->save();
-            $log->save();
-        }
-        
-        return $result;
-    }
-    
     public function startErrorsLogging() {
         set_error_handler(function($code, $message, $file, $line, $context) {
             var_export(array($code, $message, $file, $line));
@@ -65,4 +50,22 @@ class Logger {
             );
         });
     }
+    
+    protected function logExtended(
+        $methodName, $message, $description = null, $data = null, $code = null,
+        $file = null, $line = null
+    ) {
+        $result = false;
+        $log = Factory::instance()->createModel('ModelLog');
+        $request = Registry::get('request');
+        if (method_exists($log, $methodName)) {
+            $result = $log->$methodName($message, $description, $data, $code, $file, $line, $request->url);
+            if ($result) {
+                $log->save();
+            }
+        }
+        
+        return $result;
+    }
+    
 }

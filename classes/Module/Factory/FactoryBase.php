@@ -43,12 +43,6 @@ abstract class FactoryBase extends Factory {
         return $result;
     }
     
-    public function createRegistry() {
-        $moduleName = 'Registry';
-        $object = $this->createModule($moduleName);
-        return $object;
-    }
-    
     public function createConfig() {
         $moduleBaseName = 'Config';
         $object = $this->createTypedModule($moduleBaseName);
@@ -59,12 +53,6 @@ abstract class FactoryBase extends Factory {
         $moduleBaseName = 'Database';
         $moduleName = $moduleBaseName . 'Mysql';
         $object = $this->createModule($moduleName, $moduleBaseName);
-        return $object;
-    }
-    
-    public function createLogger() {
-        $moduleName = 'Logger';
-        $object = $this->createModule($moduleName);
         return $object;
     }
     

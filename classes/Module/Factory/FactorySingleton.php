@@ -31,6 +31,7 @@ abstract class FactorySingleton extends FactoryAbstract {
         
         if (! self::$_type) {
             if ($type) {
+                $result = true;
                 self::$_type = $type;
             }
         }

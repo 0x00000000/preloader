@@ -12,12 +12,8 @@ abstract class FactoryAbstract {
     
     abstract public function createModel($model);
     
-    abstract public function createRegistry();
-    
     abstract public function createConfig();
     
     abstract public function createDatabase();
-    
-    abstract public function createLogger();
     
 }

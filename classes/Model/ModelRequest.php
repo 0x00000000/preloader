@@ -18,21 +18,33 @@ class ModelRequest extends ModelDatabase {
     
     protected $_table = 'request';
     
+    const UNKNOWN_REQUEST_URI = 'UNKNOWN_REQUEST_URI';
+    
     public function __construct() {
         parent::__construct();
     }
     
     public function create() {
-        $this->_url = $_SERVER['REQUEST_URI'];
+        if (array_key_exists('REQUEST_URI', $_SERVER)) {
+            $this->_url = $_SERVER['REQUEST_URI'];
+        } else {
+            $this->_url = self::UNKNOWN_REQUEST_URI;
+        }
         $this->_siteId = Registry::get('site')->id;
         $this->_get = json_encode($_GET);
         $this->_post = json_encode($_POST);
         if (! empty($_SESSION)) {
             $this->_session = json_encode($_SESSION);
         }
-        $this->_headers = json_encode(getallheaders());
-        $this->_ip = $_SERVER['REMOTE_ADDR'];
-        $this->_userAgent = $_SERVER['HTTP_USER_AGENT'];
+        if (function_exists('getallheaders')) {
+            $this->_headers = json_encode(getallheaders());
+        }
+        if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
+            $this->_ip = $_SERVER['REMOTE_ADDR'];
+        }
+        if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
+            $this->_userAgent = $_SERVER['HTTP_USER_AGENT'];
+        }
     }
     
     public function getGet() {

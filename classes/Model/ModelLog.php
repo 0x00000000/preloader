@@ -57,25 +57,8 @@ class ModelLog extends ModelDatabase {
         return $result;
     }
     
-    protected function checkLevel($level) {
-        $result = false;
-        
-        if ($level) {
-            if (
-                $level === self::LEVEL_CRITICAL
-                || $level === self::LEVEL_ERROR
-                || $level === self::LEVEL_WARNING
-                || $level === self::LEVEL_NOTICE
-            ) {
-                $result = true;
-            }
-        }
-        
-        return $result;
-    }
-    
     public function createCritical(
-        $message, $description = null, $dat = null, $code = null,
+        $message, $description = null, $data = null, $code = null,
         $file = null, $line = null, $url = null
     ) {
         if ($code === null) {
@@ -114,6 +97,23 @@ class ModelLog extends ModelDatabase {
         return $this->create(self::LEVEL_NOTICE, $message, $description, $data, $code, $file, $line, $url);
     }
     
+    protected function checkLevel($level) {
+        $result = false;
+        
+        if ($level) {
+            if (
+                $level === self::LEVEL_CRITICAL
+                || $level === self::LEVEL_ERROR
+                || $level === self::LEVEL_WARNING
+                || $level === self::LEVEL_NOTICE
+            ) {
+                $result = true;
+            }
+        }
+        
+        return $result;
+    }
+    
     protected function setMessage($value) {
         $maxMessageLength = 255;
         
@@ -136,6 +136,14 @@ class ModelLog extends ModelDatabase {
         }
         
         $this->_url = $value;
+    }
+    
+    public function getData() {
+        return $this->_data ? json_decode($this->_data, true) : null;
+    }
+    
+    public function setData($value) {
+        $this->_data = json_encode($value);
     }
     
 }

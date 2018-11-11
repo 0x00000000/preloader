@@ -34,6 +34,17 @@ abstract class ApplicationBase extends Application {
         error_reporting(E_ALL);
     }
     
+    public function runForTest() {
+        
+        $this->logRequest();
+        
+        if (! $this->_checker->checkRequest()) {
+            $this->logUnacceptedRequest();
+            Core::FatalError();
+        }
+        
+    }
+    
     public function run() {
         
         $this->logRequest();
