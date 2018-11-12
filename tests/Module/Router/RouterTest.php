@@ -9,19 +9,29 @@ use PHPUnit\Framework\TestCase;
 include_once(dirname(__FILE__) . '/../../init.php');
 
 final class RouterTest extends TestCase {
+    protected $_router;
+    
+    protected $_modelRequest = null;
+    
+    public function __construct() {
+        parent::__construct();
+        
+        $modelSite = Factory::instance()->createModelSite();
+        
+        $this->_modelRequest = Factory::instance()->createModelRequest($modelSite);
+        $this->_modelRequest->create();
+        
+        $this->_router = Factory::instance()->createRouter($this->_modelRequest);
+    }
     
     public function testGetRequestType(): void {
-        $router = Factory::instance()->createTypedModule('Router');
-        
-        $type = $router->getRequestType();
+        $type = $this->_router->getRequestType();
         
         $this->assertEquals($type, Router::REQUEST_TYPE_CLIENT);
     }
     
     public function testGetSiteRoot(): void {
-        $router = Factory::instance()->createTypedModule('Router');
-        
-        $testSiteRoot = $router->getSiteRoot();
+        $testSiteRoot = $this->_router->getSiteRoot();
         
         $dir = FileSystem::getRoot();
         $levels = Registry::get('config')->get('router', 'levelsToSiteRoot');
@@ -33,5 +43,13 @@ final class RouterTest extends TestCase {
         $this->assertEquals($testSiteRoot, $siteRoot);
     }
     
+    public function testModelSite() {
+        $router = Factory::instance()->createTypedModule('Router');
+        $notModelRequest = Factory::instance()->createModelSite();
+        
+        $this->assertFalse($router->setModelRequest($notModelRequest));
+        
+        $this->assertTrue($router->setModelRequest($this->_modelRequest));
+    }
     
 }

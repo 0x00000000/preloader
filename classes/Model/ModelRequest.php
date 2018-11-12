@@ -5,6 +5,8 @@ namespace preloader;
 include_once('ModelDatabase.php');
 
 class ModelRequest extends ModelDatabase {
+    const UNKNOWN_REQUEST_URI = 'UNKNOWN_REQUEST_URI';
+    
     protected $_id = null;
     protected $_siteId = null;
     protected $_url = null;
@@ -18,10 +20,12 @@ class ModelRequest extends ModelDatabase {
     
     protected $_table = 'request';
     
-    const UNKNOWN_REQUEST_URI = 'UNKNOWN_REQUEST_URI';
+    protected $_modelSite = null;
     
     public function __construct() {
         parent::__construct();
+        
+        $this->addHiddenProperty('_modelSite');
     }
     
     public function create() {
@@ -30,7 +34,13 @@ class ModelRequest extends ModelDatabase {
         } else {
             $this->_url = self::UNKNOWN_REQUEST_URI;
         }
-        $this->_siteId = Registry::get('site')->id;
+        
+        if ($this->getModelSite()) {
+            $this->siteId = $this->getModelSite()->id;
+        } else {
+            $this->siteId = null;
+        }
+        
         $this->_get = json_encode($_GET);
         $this->_post = json_encode($_POST);
         if (! empty($_SESSION)) {
@@ -77,6 +87,20 @@ class ModelRequest extends ModelDatabase {
     
     public function setHeaders($value) {
         $this->_headers = json_encode($value);
+    }
+    
+    protected function getModelSite() {
+        return $this->_modelSite;
+    }
+    
+    public function setModelSite($modelSite) {
+        $result = false;
+        if (is_object($modelSite) && $modelSite instanceof ModelSite) {
+            $this->_modelSite = $modelSite;
+            $result = true;
+        }
+        
+        return $result;
     }
     
 }

@@ -9,11 +9,23 @@ use PHPUnit\Framework\TestCase;
 include_once(dirname(__FILE__) . '/../../init.php');
 
 final class LoggerTest extends TestCase {
+    protected $_logger = null;
+    
+    protected $_modelRequest = null;
+    
+    public function __construct() {
+        parent::__construct();
+        
+        $modelSite = Factory::instance()->createModelSite();
+        
+        $this->_modelRequest = Factory::instance()->createModelRequest($modelSite);
+        $this->_modelRequest->create();
+        
+        $this->_logger = Factory::instance()->createLogger($modelSite, $this->_modelRequest);
+    }
     
     public function testLogCritical() {
-        $logger = Factory::instance()->createModule('Logger');
-        
-        $result = $logger->logCritical(
+        $result = $this->_logger->logCritical(
             'Testing log critical caption', 'Testing log critical caption description'
         );
         
@@ -21,9 +33,7 @@ final class LoggerTest extends TestCase {
     }
     
     public function testLogError() {
-        $logger = Factory::instance()->createModule('Logger');
-        
-        $result = $logger->logError(
+        $result = $this->_logger->logError(
             'Testing log error caption', 'Testing log error caption description'
         );
         
@@ -31,9 +41,7 @@ final class LoggerTest extends TestCase {
     }
     
     public function testLogWarning() {
-        $logger = Factory::instance()->createModule('Logger');
-        
-        $result = $logger->logWarning(
+        $result = $this->_logger->logWarning(
             'Testing log warning caption', 'Testing log warning caption description'
         );
         
@@ -41,13 +49,20 @@ final class LoggerTest extends TestCase {
     }
     
     public function testLogNotice() {
-        $logger = Factory::instance()->createModule('Logger');
-        
-        $result = $logger->logNotice(
+        $result = $this->_logger->logNotice(
             'Testing log notice caption', 'Testing log notice caption description'
         );
         
         $this->assertTrue($result);
+    }
+    
+    public function testModelSite() {
+        $logger = Factory::instance()->createModule('Logger');
+        $notModelRequest = Factory::instance()->createModelSite();
+        
+        $this->assertFalse($logger->setModelRequest($notModelRequest));
+        
+        $this->assertTrue($logger->setModelRequest($this->_modelRequest));
     }
     
 }

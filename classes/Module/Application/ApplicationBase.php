@@ -10,26 +10,27 @@ abstract class ApplicationBase extends Application {
     
     protected $_checker = null;
     
+    protected $_logger = null;
+    
+    protected $_modelRequest = null;
+    
     public function __construct() {
         
         error_reporting(E_ALL);
         
         $this->initSession();
         
-        $site = Factory::instance()->createModel('ModelSite');
-        Registry::set('site', $site);
+        $modelSite = Factory::instance()->createModelSite();
         
-        $request = Factory::instance()->createModel('ModelRequest');
-        $request->create();
-        Registry::set('request', $request);
+        $this->_modelRequest = Factory::instance()->createModelRequest($modelSite);
+        $this->_modelRequest->create();
         
-        $logger = Factory::instance()->createModule('Logger');
-        $logger->startErrorsLogging();
-        Registry::set('logger', $logger);
+        $this->_logger = Factory::instance()->createLogger($modelSite, $this->_modelRequest);
+        $this->_logger->startErrorsLogging();
         
-        $this->_router = Factory::instance()->createTypedModule('Router');
-        $this->_checker = Factory::instance()->createTypedModule('Checker');
-        $this->_checker->setRouter($this->_router);
+        $this->_router = Factory::instance()->createRouter($this->_modelRequest);
+        
+        $this->_checker = Factory::instance()->createChecker($this->_modelRequest, $this->_router);
         
         error_reporting(E_ALL);
     }
@@ -59,19 +60,18 @@ abstract class ApplicationBase extends Application {
     }
     
     protected function logRequest() {
-        $logRequest = false;
-        $request = Registry::get('request');
+        $doLogRequest = false;
         
         if (Registry::get('config')->get('application', 'log_all_requests')) {
-            $logRequest = true;
+            $doLogRequest = true;
         } else {
             if ($this->_checker->isSuspiciousRequest()) {
-                $logRequest = true;
+                $doLogRequest = true;
             }
         }
         
-        if ($logRequest) {
-            $request->save();
+        if ($doLogRequest) {
+            $this->_modelRequest->save();
         }
     }
     
@@ -81,7 +81,7 @@ abstract class ApplicationBase extends Application {
         if (is_array($reports) and count($reports)) {
             $description = implode("\n", $reports);
         }
-        Registry::get('logger')->logNotice(
+        $this->_logger->logNotice(
             'Request was blocked', $description,
             '', null, __FILE__, __LINE__
         );

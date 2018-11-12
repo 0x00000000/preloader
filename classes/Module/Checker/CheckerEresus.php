@@ -8,14 +8,17 @@ class CheckerEresus extends CheckerBase {
     
     protected function checkAdminRequest() {
         
-        $result = parent::checkAdminRequest();
+        $result = false;
         
-        if ($result) {
-            $request = Registry::get('request');
+        if ($this->getModelRequest()) {
+            $result = parent::checkAdminRequest();
             
-            if (strpos($request->url, 'admin.php?mod=files') !== false) {
-                $result = false;
-                $this->addCheckReport('Request to mod=files.');
+            if ($result) {
+                $url = $this->getModelRequest()->url;
+                if ($url && strpos($url, 'admin.php?mod=files') !== false) {
+                    $result = false;
+                    $this->addCheckReport('Request to mod=files.');
+                }
             }
         }
         

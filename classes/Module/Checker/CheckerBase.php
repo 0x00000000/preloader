@@ -10,6 +10,8 @@ class CheckerBase extends Checker {
     
     protected $_checkReports = array();
     
+    protected $_modelRequest = null;
+    
     public function checkRequest() {
         $result = false;
         
@@ -43,12 +45,12 @@ class CheckerBase extends Checker {
     public function isSuspiciousRequest() {
         $isSuspicious = true;
         
-        $request = Registry::get('request');
-        
-        if ($request) {
+        if ($this->getModelRequest()) {
             $isSuspicious = false;
             
-            $urlToScript = preg_replace('/\?.*/', '', $request->url);
+            $url = $this->getModelRequest()->url;
+            
+            $urlToScript = preg_replace('/\?.*/', '', $url);
             $siteRoot = $this->_router->getSiteRoot();
             if (is_file($siteRoot . $urlToScript) || is_dir($siteRoot . $urlToScript)) {
                 if (! in_array($urlToScript, $this->getAllowedScripts())) {
@@ -76,19 +78,19 @@ class CheckerBase extends Checker {
     protected function checkAdminRequest() {
         $result = false;
         
-        $request = Registry::get('request');
-        
-        $headerKey = Registry::get('config')->get('checker', 'admin_header_key');
-        $headerValue = Registry::get('config')->get('checker', 'admin_header_value');
-        $headers = $request->headers;
-        if (
-            $headers
-            && array_key_exists($headerKey, $headers)
-            && $headers[$headerKey] === $headerValue
-        ) {
-            $result = true;
-        } else {
-            $this->addCheckReport('Admin request doesn`t have correct headers.');
+        if ($this->getModelRequest()) {
+            $headerKey = Registry::get('config')->get('checker', 'admin_header_key');
+            $headerValue = Registry::get('config')->get('checker', 'admin_header_value');
+            $headers = $this->getModelRequest()->headers;
+            if (
+                $headers
+                && array_key_exists($headerKey, $headers)
+                && $headers[$headerKey] === $headerValue
+            ) {
+                $result = true;
+            } else {
+                $this->addCheckReport('Admin request doesn`t have correct headers.');
+            }
         }
         
         return $result;
@@ -119,11 +121,9 @@ class CheckerBase extends Checker {
             && array_key_exists('get', $params) && is_array($params['get']) && count($params['url'])
             && array_key_exists('post', $params) && is_array($params['post']) && count($params['url'])
         ) {
-            $request = Registry::get('request');
-            
-            if ($this->checkUrl($request, $params)) {
-                if ($this->checkGet($request, $params)) {
-                    if ($this->checkPost($request, $params)) {
+            if ($this->checkUrl($params)) {
+                if ($this->checkGet($params)) {
+                    if ($this->checkPost($params)) {
                         $result = true;
                     }
                 }
@@ -135,24 +135,28 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    protected function checkUrl($request, $params) {
-        $result = true;
+    protected function checkUrl($params) {
+        $result = false;
         
-        $url = preg_replace('/\?.*/', '', $request->url);
-        $parts = explode('/', $url);
-        
-        if (array_key_exists('maxPartsCount', $params['url'])) {
-            if (count($parts) > $params['url']['maxPartsCount']) {
-                    $result = false;
-                    $this->addCheckReport('Url has more then ' . $params['url']['maxPartsCount'] . ' parts.');
+        if ($this->getModelRequest()) {
+            $result = true;
+            
+            $url = preg_replace('/\?.*/', '', $this->getModelRequest()->url);
+            $parts = explode('/', $url);
+            
+            if (array_key_exists('maxPartsCount', $params['url'])) {
+                if (count($parts) > $params['url']['maxPartsCount']) {
+                        $result = false;
+                        $this->addCheckReport('Url has more then ' . $params['url']['maxPartsCount'] . ' parts.');
+                }
             }
-        }
-        
-        if (array_key_exists('maxPartLength', $params['url'])) {
-            foreach ($parts as $part) {
-                if (strlen($part) > $params['url']['maxPartLength']) {
-                    $result = false;
-                    $this->addCheckReport('Url`s part "' . $part . '" is longer then ' . $params['url']['maxPartLength'] . ' symbols.');
+            
+            if (array_key_exists('maxPartLength', $params['url'])) {
+                foreach ($parts as $part) {
+                    if (strlen($part) > $params['url']['maxPartLength']) {
+                        $result = false;
+                        $this->addCheckReport('Url`s part "' . $part . '" is longer then ' . $params['url']['maxPartLength'] . ' symbols.');
+                    }
                 }
             }
         }
@@ -160,22 +164,22 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    protected function checkGet($request, $params) {
+    protected function checkGet($params) {
         $result = true;
         
-        if ($request->get) {
-            $get = $request->get;
+        if ($this->getModelRequest()) {
+            $get = $this->getModelRequest()->get;
             $result = $this->checkParams($get, $params['get']);
         }
         
         return $result;
     }
     
-    protected function checkPost($request, $params) {
+    protected function checkPost($params) {
         $result = true;
         
-        if ($request->post) {
-            $post = $request->post;
+        if ($this->getModelRequest()) {
+            $post = $this->getModelRequest()->post;
             $result = $this->checkParams($post, $params['post']);
         }
         
@@ -224,6 +228,20 @@ class CheckerBase extends Checker {
         if ($message) {
             $this->_checkReports[] = $message;
         }
+    }
+    
+    public function setModelRequest($modelRequest) {
+        $result = false;
+        if (is_object($modelRequest) && $modelRequest instanceof ModelRequest) {
+            $this->_modelRequest = $modelRequest;
+            $result = true;
+        }
+        
+        return $result;
+    }
+    
+    protected function getModelRequest() {
+        return $this->_modelRequest;
     }
     
 }

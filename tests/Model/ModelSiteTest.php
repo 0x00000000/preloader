@@ -13,14 +13,14 @@ Core::loadModule('ModelSite');
 final class ModelSiteTest extends TestCase {
     
     public function testGetByUrl(): void {
-        $site = Factory::instance()->createModel('ModelSite');
+        $site = Factory::instance()->createModelSite();
         $this->assertTrue($site->getByUrl(ModelSite::UNKNOWN_SERVER_NAME));
         $this->assertEquals($site->url, ModelSite::UNKNOWN_SERVER_NAME);
         $this->assertEquals($site->name, ModelSite::UNKNOWN_SERVER_NAME);
     }
     
     public function testProperties(): void {
-        $site = Factory::instance()->createModel('ModelSite');
+        $site = Factory::instance()->createModelSite();
         $this->assertEquals($site->url, ModelSite::UNKNOWN_SERVER_NAME);
         $this->assertEquals($site->name, ModelSite::UNKNOWN_SERVER_NAME);
     }

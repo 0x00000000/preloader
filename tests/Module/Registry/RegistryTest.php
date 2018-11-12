@@ -15,7 +15,7 @@ final class RegistryTest extends TestCase {
         $keyArray = 'keyArray';
         $valueArray = array(1, 2, 'key' => 'val');
         
-        $registry = Factory::instance()->createModule('Registry');
+        $registry = Factory::instance()->createRegistry();
         
         for ($i = 0; $i < count($values); $i++) {
             $registry->set('key' . $i, $values[$i]);
@@ -25,7 +25,7 @@ final class RegistryTest extends TestCase {
         
         $registry->set($keyArray, $valueArray);
         $testValue = $registry->get($keyArray);
-        $this->assertEquals(json_encode($testValue),  json_encode($valueArray));
+        $this->assertEquals($testValue,  $valueArray);
         
     }
     

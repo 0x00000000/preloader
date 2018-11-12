@@ -9,7 +9,7 @@ class init {
     public static function init() {
         Core::setApplicationType('Eresus');
 
-        $application = Factory::instance()->createTypedModule('Application');
+        $application = Factory::instance()->createApplication();
 
         $application->runForTest();
     }

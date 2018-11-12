@@ -3,6 +3,10 @@
 namespace preloader;
 
 class Logger {
+    protected $_modelSite = null;
+    
+    protected $_modelRequest = null;
+    
     public function __construct() {
         
     }
@@ -56,13 +60,47 @@ class Logger {
         $file = null, $line = null
     ) {
         $result = false;
-        $log = Factory::instance()->createModel('ModelLog');
-        $request = Registry::get('request');
-        if (method_exists($log, $methodName)) {
-            $result = $log->$methodName($message, $description, $data, $code, $file, $line, $request->url);
-            if ($result) {
-                $log->save();
+        $modelLog = Factory::instance()->createModelLog($this->getModelSite(), $this->getModelRequest());
+        
+        if (method_exists($modelLog, $methodName)) {
+            if ($this->getModelRequest()) {
+                $url = $this->getModelRequest()->url;
+            } else {
+                $url = null;
             }
+            
+            $result = $modelLog->$methodName($message, $description, $data, $code, $file, $line, $url);
+            if ($result) {
+                $modelLog->save();
+            }
+        }
+        
+        return $result;
+    }
+    
+    public function getModelSite() {
+        return $this->_modelSite;
+    }
+    
+    public function setModelSite($modelSite) {
+        $result = false;
+        if (is_object($modelSite) && $modelSite instanceof ModelSite) {
+            $this->_modelSite = $modelSite;
+            $result = true;
+        }
+        
+        return $result;
+    }
+    
+    protected function getModelRequest() {
+        return $this->_modelRequest;
+    }
+    
+    public function setModelRequest($modelRequest) {
+        $result = false;
+        if (is_object($modelRequest) && $modelRequest instanceof ModelRequest) {
+            $this->_modelRequest = $modelRequest;
+            $result = true;
         }
         
         return $result;

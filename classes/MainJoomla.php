@@ -17,7 +17,7 @@ class MainJoomla extends MainAbstract {
         
         Core::setApplicationType('Joomla');
         
-        $this->_application = Factory::instance()->createTypedModule('Application');
+        $this->_application = Factory::instance()->createApplication();
         
         $this->_application->run();
         

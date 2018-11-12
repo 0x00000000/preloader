@@ -158,4 +158,17 @@ abstract class ModelDatabase extends ModelAbstract {
         
         return $result;
     }
+    
+    protected function addHiddenProperty($propertyName) {
+        $result = false;
+        if (is_string($propertyName) && strlen($propertyName) && is_array($this->_hiddenPropsList)) {
+            if (! in_array($propertyName, $this->_hiddenPropsList)) {
+                $this->_hiddenPropsList[] = $propertyName;
+            }
+            $result = true;
+        }
+        
+        return $result;
+    }
+
 }

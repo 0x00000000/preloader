@@ -9,12 +9,11 @@ class RouterEresus extends RouterBase {
     public function getRequestType() {
         $type = false;
         
-        $request = Registry::get('request');
-        
-        if ($request) {
-            if (strpos($request->url, '/admin') === 0) {
+        if ($this->getModelRequest()) {
+            $url = $this->getModelRequest()->url;
+            if (strpos($url, '/admin') === 0) {
                 $type = Router::REQUEST_TYPE_ADMIN;
-            } else if (strpos($request->url, '/ajax') === 0) {
+            } else if (strpos($url, '/ajax') === 0) {
                 $type = Router::REQUEST_TYPE_AJAX;
             } else {
                 $type = Router::REQUEST_TYPE_CLIENT;

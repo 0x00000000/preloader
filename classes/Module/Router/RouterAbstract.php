@@ -14,4 +14,6 @@ abstract class RouterAbstract {
     
     abstract public function getSiteRoot();
     
+    abstract public function setModelRequest($modelRequest);
+    
 }

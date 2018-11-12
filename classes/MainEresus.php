@@ -17,7 +17,7 @@ class MainEresus extends MainAbstract {
         
         Core::setApplicationType('Eresus');
         
-        $this->_application = Factory::instance()->createTypedModule('Application');
+        $this->_application = Factory::instance()->createApplication();
         
         $this->_application->run();
         

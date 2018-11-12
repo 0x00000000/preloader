@@ -28,13 +28,13 @@ final class ConfigTest extends TestCase {
         $this->assertEquals($config->get('database', 'testDatabaseParam'), $stringValue);
         
         $config->add('database', 'testDatabaseParam', $arrayValue);
-        $this->assertEquals(json_encode($config->get('database', 'testDatabaseParam')), json_encode($arrayValue));
+        $this->assertEquals($config->get('database', 'testDatabaseParam'), $arrayValue);
         
         $config->add('testSection', 'testSectionParam', $stringValue);
         $this->assertEquals($config->get('testSection', 'testSectionParam'), $stringValue);
         
         $config->add('testSection', 'testSectionParam', $arrayValue);
-        $this->assertEquals(json_encode($config->get('testSection', 'testSectionParam')), json_encode($arrayValue));
+        $this->assertEquals($config->get('testSection', 'testSectionParam'), $arrayValue);
         
     }
     

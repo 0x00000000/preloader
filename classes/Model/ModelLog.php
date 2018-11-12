@@ -5,6 +5,11 @@ namespace preloader;
 include_once('ModelDatabase.php');
 
 class ModelLog extends ModelDatabase {
+    const LEVEL_CRITICAL = 1;
+    const LEVEL_ERROR = 2;
+    const LEVEL_WARNING = 4;
+    const LEVEL_NOTICE = 8;
+    
     protected $_id = null;
     protected $_siteId = null;
     protected $_requestId = null;
@@ -19,13 +24,15 @@ class ModelLog extends ModelDatabase {
     
     protected $_table = 'log';
     
-    const LEVEL_CRITICAL = 1;
-    const LEVEL_ERROR = 2;
-    const LEVEL_WARNING = 4;
-    const LEVEL_NOTICE = 8;
+    protected $_modelSite = null;
+    
+    protected $_modelRequest = null;
     
     public function __construct() {
         parent::__construct();
+        
+        $this->addHiddenProperty('_modelSite');
+        $this->addHiddenProperty('_modelRequest');
     }
     
     public function create(
@@ -34,14 +41,25 @@ class ModelLog extends ModelDatabase {
     ) {
         $result = false;
         
-        $request = Registry::get('request');
-        if (! $request->id) {
-            $request->save();
+        if ($this->getModelRequest()) {
+            if (! $this->getModelRequest()->id) {
+                $this->getModelRequest()->save();
+            }
         }
         
         if ($this->checkLevel($level) && strlen($message)) {
-            $this->siteId = Registry::get('site')->id;
-            $this->requestId = $request->id;
+            if ($this->getModelSite()) {
+                $this->siteId = $this->getModelSite()->id;
+            } else {
+                $this->siteId = null;
+            }
+            
+            if ($this->getModelRequest()) {
+                $this->requestId = $this->getModelRequest()->id;
+            } else {
+                $this->requestId = null;
+            }
+            
             $this->level = $level;
             $this->message = $message;
             $this->description = $description;
@@ -144,6 +162,34 @@ class ModelLog extends ModelDatabase {
     
     public function setData($value) {
         $this->_data = json_encode($value);
+    }
+    
+    protected function getModelSite() {
+        return $this->_modelSite;
+    }
+    
+    public function setModelSite($modelSite) {
+        $result = false;
+        if (is_object($modelSite) && $modelSite instanceof ModelSite) {
+            $this->_modelSite = $modelSite;
+            $result = true;
+        }
+        
+        return $result;
+    }
+    
+    protected function getModelRequest() {
+        return $this->_modelRequest;
+    }
+    
+    public function setModelRequest($modelRequest) {
+        $result = false;
+        if (is_object($modelRequest) && $modelRequest instanceof ModelRequest) {
+            $this->_modelRequest = $modelRequest;
+            $result = true;
+        }
+        
+        return $result;
     }
     
 }

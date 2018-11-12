@@ -14,4 +14,6 @@ abstract class CheckerAbstract {
     
     abstract public function getCheckReports();
     
+    abstract public function setModelRequest($modelRequest);
+    
 }

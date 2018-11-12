@@ -9,10 +9,9 @@ class RouterJoomla extends RouterBase {
     public function getRequestType() {
         $type = false;
         
-        $request = Registry::get('request');
-        
-        if ($request) {
-            if (strpos($request->url, '/administrator') === 0) {
+        if ($this->getModelRequest()) {
+            $url = $this->getModelRequest()->url;
+            if (strpos($url, '/administrator') === 0) {
                 $type = Router::REQUEST_TYPE_ADMIN;
             } else {
                 $type = Router::REQUEST_TYPE_CLIENT;

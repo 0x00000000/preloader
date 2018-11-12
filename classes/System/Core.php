@@ -89,7 +89,7 @@ class Core {
             self::loadModule('Factory');
             Factory::setType(self::getApplicationType());
             
-            Factory::instance()->createModule('Registry');
+            Factory::instance()->createRegistry();
             
             $config = Factory::instance()->createConfig();
             if ($config) {
