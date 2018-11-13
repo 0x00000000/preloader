@@ -7,11 +7,12 @@ include_once(dirname(__FILE__) . '/../classes/System/Core.php');
 class init {
     
     public static function init() {
-        Core::setApplicationType('Eresus');
-
+        $testMode = true;
+        Core::setApplicationType('Eresus', $testMode);
+        
         $application = Factory::instance()->createApplication();
-
-        $application->runForTest();
+        
+        $application->run();
     }
     
 }

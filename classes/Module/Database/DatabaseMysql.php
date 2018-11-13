@@ -24,19 +24,8 @@ class DatabaseMysql extends Database {
         
     }
     
-    public function getById($table, $id, $key = 'id') {
-        $result = false;
-        
-        $query = 'select * from `' . $this->_mysqli->escape_string($this->_prefix . $table) . '`' . 
-            ' where `' . $this->_mysqli->escape_string($key) . '` = "' . 
-            $this->_mysqli->escape_string($id) . '"';
-        $res = $this->_mysqli->query($query);
-        if ($res) {
-            $row = $res->fetch_assoc();
-            if ($row) {
-                $result = $row;
-            }
-        }
+    public function getById($table, $id) {
+        $result = $this->getByKey($table, 'id', $id);
         
         return $result;
     }

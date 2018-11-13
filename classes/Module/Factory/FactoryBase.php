@@ -8,6 +8,16 @@ abstract class FactoryBase extends Factory {
     
     protected $_moduleNamePostfix = null;
     
+    protected $_isTestMode = false;
+    
+    public function setTestMode() {
+        $this->_isTestMode = true;
+    }
+    
+    protected function isTestMode() {
+        return $this->_isTestMode;
+    }
+    
     public function createModule($moduleName, $moduleBaseName = null) {
         $result = false;
         
@@ -66,7 +76,12 @@ abstract class FactoryBase extends Factory {
     
     public function createApplication() {
         $moduleBaseName = 'Application';
-        $object = $this->createTypedModule($moduleBaseName);
+        if (! $this->isTestMode()) {
+            $object = $this->createTypedModule($moduleBaseName);
+        } else {
+            $moduleName = $moduleBaseName . 'Test';
+            $object = $this->createModule($moduleName, $moduleBaseName);
+        }
         return $object;
     }
     
@@ -86,7 +101,11 @@ abstract class FactoryBase extends Factory {
     
     public function createDatabase() {
         $moduleBaseName = 'Database';
-        $moduleName = $moduleBaseName . 'Mysql';
+        if (! $this->isTestMode()) {
+            $moduleName = $moduleBaseName . 'Mysql';
+        } else {
+            $moduleName = $moduleBaseName . 'Test';
+        }
         $object = $this->createModule($moduleName, $moduleBaseName);
         return $object;
     }
