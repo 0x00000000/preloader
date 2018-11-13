@@ -72,7 +72,7 @@ final class ModelLogTest extends TestCase {
     }
         
     public function testCreate() {
-        $this->_modelLog->create(
+        $id = $this->_modelLog->create(
             $this->_logData['level'], $this->_logData['message'], $this->_logData['description'],
             $this->_logData['data'],
             $this->_logData['code'], $this->_logData['file'], $this->_logData['line'], $this->_logData['url']

@@ -7,11 +7,7 @@ include_once('Database.php');
 class DatabaseTest extends Database {
     protected $_data = array();
     
-    protected $_lastAddedId = 0;
-    
-    protected $_lastAddedRecord = null;
-    
-    protected $_lastUpdatedRecord = null;
+    protected $_lastId = 0;
     
     public function __construct() {
         
@@ -56,11 +52,10 @@ class DatabaseTest extends Database {
                 $this->_data[$table] = array();
             }
             
-            $this->_lastAddedId++;
-            $data['id'] = $this->_lastAddedId;
-            $this->_data[$table][$this->_lastAddedId] = $data;
-            $this->_lastAddedRecord = $data;
-            $result = $this->_lastAddedId;
+            $this->_lastId++;
+            $data['id'] = $this->_lastId;
+            $this->_data[$table][$this->_lastId] = $data;
+            $result = $this->_lastId;
         }
         
         return $result;
@@ -80,7 +75,6 @@ class DatabaseTest extends Database {
                 }
                 
                 $table[$data[$primaryKey]] = $record;
-                $this->_lastUpdatedRecord = $record;
                 $result = $data[$primaryKey];
             }
         }
@@ -88,15 +82,4 @@ class DatabaseTest extends Database {
         return $result;
     }
     
-    public function getLasAddedRecord() {
-        return $this->_lastAddedRecord;
-    }
-    
-    public function getLastUpdatedRecord() {
-        return $this->_lastUpdatedRecord;
-    }
-    
-    public function fillGreekingData() {
-        return true;
-    }
 }
