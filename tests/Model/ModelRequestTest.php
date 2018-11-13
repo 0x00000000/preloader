@@ -124,4 +124,31 @@ final class ModelRequestTest extends TestCase {
         
     }
     
+    public function testDatabase() {
+        $modelRequestSave = Factory::instance()->createModelRequest($this->_modelSite);
+        $modelRequestSave->create();
+        
+        $idSave = $modelRequestSave->save();
+        $this->assertTrue(boolval($idSave));
+        
+        $dataAfterSave = $modelRequestSave->getDataAssoc();
+        
+        $modelRequestGet = Factory::instance()->createModelRequest($this->_modelSite);
+        $modelRequestGet->getById($idSave);
+        $dataAfterGet = $modelRequestGet->getDataAssoc();
+        
+        $this->assertEquals($dataAfterSave, $dataAfterGet);
+        
+        $modelRequestGet->info = 'Test info.';
+        $idGet = $modelRequestGet->save();
+        $dataAfterUpdated = $modelRequestGet->getDataAssoc();
+        
+        $modelRequestUpdatedGet = Factory::instance()->createModelRequest($this->_modelSite);
+        $modelRequestUpdatedGet->getById($idGet);
+        
+        $dataAfterUpdatedGet = $modelRequestUpdatedGet->getDataAssoc();
+        
+        $this->assertEquals($dataAfterUpdated, $dataAfterUpdatedGet);
+    }
+    
 }

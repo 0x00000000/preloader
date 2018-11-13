@@ -74,7 +74,7 @@ class DatabaseTest extends Database {
                     }
                 }
                 
-                $table[$data[$primaryKey]] = $record;
+                $this->_data[$table][$data[$primaryKey]] = $record;
                 $result = $data[$primaryKey];
             }
         }

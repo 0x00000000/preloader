@@ -68,7 +68,6 @@ final class ModelLogTest extends TestCase {
         $this->_modelLog->setData($data);
         $testData = $this->_modelLog->getData();
         $this->assertEquals($data, $testData);
-        
     }
         
     public function testCreate() {
@@ -86,7 +85,6 @@ final class ModelLogTest extends TestCase {
         $this->assertEquals($this->_modelLog->file, $this->_logData['file']);
         $this->assertEquals($this->_modelLog->line, $this->_logData['line']);
         $this->assertEquals($this->_modelLog->url, $this->_logData['url']);
-        
     }
     
     public function testCritical() {
@@ -172,7 +170,6 @@ final class ModelLogTest extends TestCase {
         $this->assertFalse($modelLog->setModelSite($notModelSite));
         
         $this->assertTrue($modelLog->setModelSite($this->_modelSite));
-        
     }
     
     public function testModelRequest() {
@@ -182,6 +179,41 @@ final class ModelLogTest extends TestCase {
         $this->assertFalse($modelLog->setModelRequest($notModelRequest));
         
         $this->assertTrue($modelLog->setModelRequest($this->_modelRequest));
-        
     }
+    
+    public function testDatabase() {
+        $modelRequest = Factory::instance()->createModelRequest($this->_modelSite);
+        $modelRequest->create();
+        
+        $modelLogSave = Factory::instance()->createModelLog($this->_modelSite, $modelRequest);
+        
+        $modelLogSave->create(
+            $this->_logData['level'], $this->_logData['message'], $this->_logData['description'],
+            $this->_logData['data'],
+            $this->_logData['code'], $this->_logData['file'], $this->_logData['line'], $this->_logData['url']
+        );
+        
+        $idSave = $modelLogSave->save();
+        $this->assertTrue(boolval($idSave));
+        
+        $dataAfterSave = $modelLogSave->getDataAssoc();
+        
+        $modelLogGet = Factory::instance()->createModelLog($this->_modelSite, $modelRequest);
+        $modelLogGet->getById($idSave);
+        $dataAfterGet = $modelLogGet->getDataAssoc();
+        
+        $this->assertEquals($dataAfterSave, $dataAfterGet);
+        
+        $modelLogGet->message .= '!';
+        $idGet = $modelLogGet->save();
+        $dataAfterUpdated = $modelLogGet->getDataAssoc();
+        
+        $modelLogUpdatedGet = Factory::instance()->createModelLog($this->_modelSite, $modelRequest);
+        $modelLogUpdatedGet->getById($idGet);
+        
+        $dataAfterUpdatedGet = $modelLogUpdatedGet->getDataAssoc();
+        
+        $this->assertEquals($dataAfterUpdated, $dataAfterUpdatedGet);
+    }
+    
 }

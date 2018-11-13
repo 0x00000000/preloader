@@ -30,6 +30,8 @@ abstract class ModelDatabase extends ModelAbstract {
     }
     
     public function save() {
+        $result = false;
+        
         if ($this->_table) {
             $data = $this->getDataForDB();
             
@@ -38,12 +40,16 @@ abstract class ModelDatabase extends ModelAbstract {
                     $id = Database::instance()->addRecord($this->_table, $data);
                     if ($id) {
                         $this->id = $id;
+                        $result = $this->id;
                     }
                 } else {
                     Database::instance()->updateRecord($this->_table, $data);
+                    $result = $this->id;
                 }
             }
         }
+        
+        return $result;
     }
     
     protected function isDataProp($propName) {
