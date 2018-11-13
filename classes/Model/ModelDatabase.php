@@ -14,7 +14,7 @@ abstract class ModelDatabase extends ModelAbstract {
     public function getById($id) {
         $result = false;
         if ($this->_table && $id) {
-            $dbData = Registry::get('database')->getById($this->_table, $id);
+            $dbData = Database::instance()->getById($this->_table, $id);
             $result = $this->setDataFromDB($dbData);
         }
         return $result;
@@ -23,7 +23,7 @@ abstract class ModelDatabase extends ModelAbstract {
     public function getByKey($key, $value) {
         $result = false;
         if ($this->_table && $key) {
-            $dbData = Registry::get('database')->getByKey($this->_table, $key, $value);
+            $dbData = Database::instance()->getByKey($this->_table, $key, $value);
             $result = $this->setDataFromDB($dbData);
         }
         return $result;
@@ -35,12 +35,12 @@ abstract class ModelDatabase extends ModelAbstract {
             
             if (count($data)) {
                 if (! $this->id) {
-                    $id = Registry::get('database')->addRecord($this->_table, $data);
+                    $id = Database::instance()->addRecord($this->_table, $data);
                     if ($id) {
                         $this->id = $id;
                     }
                 } else {
-                    Registry::get('database')->updateRecord($this->_table, $data);
+                    Database::instance()->updateRecord($this->_table, $data);
                 }
             }
         }

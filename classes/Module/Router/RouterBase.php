@@ -10,7 +10,7 @@ abstract class RouterBase extends Router {
     
     public function getSiteRoot() {
         $dir = FileSystem::getRoot();
-        $levels = Registry::get('config')->get('router', 'levelsToSiteRoot');
+        $levels = Config::instance()->get('router', 'levelsToSiteRoot');
         for ($i = 0; $i < $levels; $i++) {
             $dir = dirname($dir);
         }

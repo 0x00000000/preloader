@@ -21,7 +21,7 @@ final class CoreTest extends TestCase {
     public function testLoadModule(): void {
         $this->assertTrue(Core::loadModule('Factory'));
         $this->assertTrue(Core::loadModule('Router'));
-        $this->assertTrue(Core::loadModule('DatabaseMysql', 'Database'));
+        $this->assertTrue(Core::loadModule('CheckerEresus', 'Checker'));
         
     }
     

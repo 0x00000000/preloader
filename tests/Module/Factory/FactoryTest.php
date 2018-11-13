@@ -31,8 +31,8 @@ final class FactoryTest extends TestCase {
         $logger = Factory::instance()->createModule('Logger');
         $this->assertTrue(is_object($logger));
         
-        $database = Factory::instance()->createModule('DatabaseMysql', 'Database');
-        $this->assertTrue(is_object($database));
+        $checker = Factory::instance()->createModule('CheckerEresus', 'Checker');
+        $this->assertTrue(is_object($checker));
         
     }
     

@@ -10,7 +10,7 @@ class DatabaseMysql extends Database {
     private $_mysqli = null;
     
     public function __construct() {
-        $config = Registry::get('config');
+        $config = Config::instance();
         $server = $config->get('database', 'server');
         $login = $config->get('database', 'login');
         $password = $config->get('database', 'password');

@@ -63,7 +63,7 @@ class CheckerBase extends Checker {
     }
     
     protected function getAllowedScripts() {
-        $scriptsList = Registry::get('config')->get('checker', 'allowedScripts');
+        $scriptsList = Config::instance()->get('checker', 'allowedScripts');
         $rootInList = array('/');
         
         if ($scriptsList) {
@@ -79,8 +79,8 @@ class CheckerBase extends Checker {
         $result = false;
         
         if ($this->getModelRequest()) {
-            $headerKey = Registry::get('config')->get('checker', 'admin_header_key');
-            $headerValue = Registry::get('config')->get('checker', 'admin_header_value');
+            $headerKey = Config::instance()->get('checker', 'admin_header_key');
+            $headerValue = Config::instance()->get('checker', 'admin_header_value');
             $headers = $this->getModelRequest()->headers;
             if (
                 $headers
@@ -97,7 +97,7 @@ class CheckerBase extends Checker {
     }
 
     protected function checkAjaxRequest() {
-        $rules = Registry::get('config')->get('checker', 'rules');
+        $rules = Config::instance()->get('checker', 'rules');
         
         $result = $this->checkRequestParams($rules);
         
@@ -105,7 +105,7 @@ class CheckerBase extends Checker {
     }
 
     protected function checkClientRequest() {
-        $rules = Registry::get('config')->get('checker', 'rules');
+        $rules = Config::instance()->get('checker', 'rules');
         
         $result = $this->checkRequestParams($rules);
         

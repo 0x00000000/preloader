@@ -2,8 +2,8 @@
 
 namespace preloader;
 
-include_once('DatabaseAbstract.php');
+include_once('DatabaseSingleton.php');
 
-abstract class Database extends DatabaseAbstract {
+abstract class Database extends DatabaseSingleton {
     
 }

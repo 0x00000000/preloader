@@ -2,8 +2,8 @@
 
 namespace preloader;
 
-include_once('ConfigAbstract.php');
+include_once('ConfigSingleton.php');
 
-abstract class Config extends ConfigAbstract {
+abstract class Config extends ConfigSingleton {
     
 }

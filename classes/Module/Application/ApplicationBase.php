@@ -51,7 +51,7 @@ abstract class ApplicationBase extends Application {
     protected function logRequest() {
         $doLogRequest = false;
         
-        if (Registry::get('config')->get('application', 'log_all_requests')) {
+        if (Config::instance()->get('application', 'log_all_requests')) {
             $doLogRequest = true;
         } else {
             if ($this->_checker->isSuspiciousRequest()) {
@@ -78,12 +78,12 @@ abstract class ApplicationBase extends Application {
     
     protected function initSession() {
         
-        $session_name = Registry::get('config')->get('application', 'session_name');
+        $session_name = Config::instance()->get('application', 'session_name');
         if ($session_name) {
             session_name($session_name);
         }
         
-        if (Registry::get('config')->get('application', 'session_start')) {
+        if (Config::instance()->get('application', 'session_start')) {
             session_start();
         }
         

@@ -99,13 +99,9 @@ class Core {
             
             Factory::instance()->createRegistry();
             
-            $config = Factory::instance()->createConfig();
-            if ($config) {
-                Registry::set('config', $config);
-                
-                $database = Factory::instance()->createDatabase();
-                Registry::set('database', $database);
-            }
+            Factory::instance()->createConfig();
+            
+            Factory::instance()->createDatabase();
             
         }
         return $result;

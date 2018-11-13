@@ -94,19 +94,22 @@ abstract class FactoryBase extends Factory {
     }
     
     public function createConfig() {
-        $moduleBaseName = 'Config';
-        $object = $this->createTypedModule($moduleBaseName);
+        Core::loadModule('Config');
+        $type = $this->_moduleNamePostfix;
+        Config::setType($type);
+        $object = Config::instance();
         return $object;
     }
     
     public function createDatabase() {
-        $moduleBaseName = 'Database';
+        Core::loadModule('Database');
         if (! $this->isTestMode()) {
-            $moduleName = $moduleBaseName . 'Mysql';
+            $type = 'Mysql';
         } else {
-            $moduleName = $moduleBaseName . 'Test';
+            $type = 'Test';
         }
-        $object = $this->createModule($moduleName, $moduleBaseName);
+        Database::setType($type);
+        $object = Database::instance();
         return $object;
     }
     
