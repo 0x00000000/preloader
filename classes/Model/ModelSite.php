@@ -15,7 +15,9 @@ class ModelSite extends ModelDatabase {
     
     public function __construct() {
         parent::__construct();
-        
+    }
+    
+    public function create() {
         if (array_key_exists('SERVER_NAME', $_SERVER)) {
             $url = preg_replace('/^www\./i', '', $_SERVER['SERVER_NAME']);
         } else {

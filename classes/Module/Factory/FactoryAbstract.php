@@ -10,6 +10,8 @@ abstract class FactoryAbstract {
     
     abstract public function setTestMode();
     
+    abstract public function setDatabase($database);
+    
     abstract public function createModule($moduleName, $moduleBaseName = null);
     
     abstract public function createModel($model);

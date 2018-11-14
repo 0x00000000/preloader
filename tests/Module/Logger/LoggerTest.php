@@ -17,6 +17,7 @@ final class LoggerTest extends TestCase {
         parent::__construct();
         
         $modelSite = Factory::instance()->createModelSite();
+        $modelSite->create();
         
         $this->_modelRequest = Factory::instance()->createModelRequest($modelSite);
         $this->_modelRequest->create();

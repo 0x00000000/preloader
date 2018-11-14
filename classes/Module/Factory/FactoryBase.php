@@ -10,12 +10,28 @@ abstract class FactoryBase extends Factory {
     
     protected $_isTestMode = false;
     
+    protected $_database = null;
+    
     public function setTestMode() {
         $this->_isTestMode = true;
     }
     
     protected function isTestMode() {
         return $this->_isTestMode;
+    }
+    
+    public function setDatabase($database) {
+        $result = false;
+        if (is_object($database) && $database instanceof Database) {
+            $this->_database = $database;
+            $result = true;
+        }
+        
+        return $result;
+    }
+    
+    protected function getDatabase() {
+        return $this->_database;
     }
     
     public function createModule($moduleName, $moduleBaseName = null) {
@@ -56,6 +72,9 @@ abstract class FactoryBase extends Factory {
     public function createModelSite() {
         $modelName = 'ModelSite';
         $model = Factory::instance()->createModel($modelName);
+        if ($this->getDatabase()) {
+            $model->setDatabase($this->getDatabase());
+        }
         return $model;
     }
     
@@ -63,6 +82,9 @@ abstract class FactoryBase extends Factory {
         $modelName = 'ModelRequest';
         $model = Factory::instance()->createModel($modelName);
         $model->setModelSite($modelSite);
+        if ($this->getDatabase()) {
+            $model->setDatabase($this->getDatabase());
+        }
         return $model;
     }
     
@@ -71,6 +93,9 @@ abstract class FactoryBase extends Factory {
         $model = Factory::instance()->createModel($modelName);
         $model->setModelSite($modelSite);
         $model->setModelRequest($modelRequest);
+        if ($this->getDatabase()) {
+            $model->setDatabase($this->getDatabase());
+        }
         return $model;
     }
     
@@ -102,14 +127,13 @@ abstract class FactoryBase extends Factory {
     }
     
     public function createDatabase() {
-        Core::loadModule('Database');
+        $moduleBaseName = 'Database';
         if (! $this->isTestMode()) {
-            $type = 'Mysql';
+            $moduleName = $moduleBaseName . 'Mysql';
         } else {
-            $type = 'Test';
+            $moduleName = $moduleBaseName . 'Test';
         }
-        Database::setType($type);
-        $object = Database::instance();
+        $object = $this->createModule($moduleName, $moduleBaseName);
         return $object;
     }
     

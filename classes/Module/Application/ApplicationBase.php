@@ -21,6 +21,7 @@ abstract class ApplicationBase extends Application {
         $this->initSession();
         
         $modelSite = Factory::instance()->createModelSite();
+        $modelSite->create();
         
         $this->_modelRequest = Factory::instance()->createModelRequest($modelSite);
         $this->_modelRequest->create();

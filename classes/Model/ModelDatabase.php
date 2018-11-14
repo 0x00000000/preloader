@@ -6,59 +6,57 @@ include_once('ModelAbstract.php');
 
 abstract class ModelDatabase extends ModelAbstract {
     protected $_table = null;
-    protected $_hiddenPropsList = array('_table', '_hiddenPropsList');
+    protected $_hiddenPropsList = array('_table', '_hiddenPropsList', '_database');
+    
+    protected $_database = null;
     
     public function __construct() {
     }
     
     public function getById($id) {
         $result = false;
-        if ($this->_table && $id) {
-            $dbData = Database::instance()->getById($this->_table, $id);
-            $result = $this->setDataFromDB($dbData);
-        }
-        return $result;
-    }
-    
-    public function getByKey($key, $value) {
-        $result = false;
-        if ($this->_table && $key) {
-            $dbData = Database::instance()->getByKey($this->_table, $key, $value);
-            $result = $this->setDataFromDB($dbData);
-        }
-        return $result;
-    }
-    
-    public function save() {
-        $result = false;
         
-        if ($this->_table) {
-            $data = $this->getDataForDB();
-            
-            if (count($data)) {
-                if (! $this->id) {
-                    $id = Database::instance()->addRecord($this->_table, $data);
-                    if ($id) {
-                        $this->id = $id;
-                        $result = $this->id;
-                    }
-                } else {
-                    Database::instance()->updateRecord($this->_table, $data);
-                    $result = $this->id;
-                }
+        if ($this->getDatabase()) {
+            if ($this->_table && $id) {
+                $dbData = $this->getDatabase()->getById($this->_table, $id);
+                $result = $this->setDataFromDB($dbData);
             }
         }
         
         return $result;
     }
     
-    protected function isDataProp($propName) {
+    public function getByKey($key, $value) {
         $result = false;
         
-        if (! in_array($propName, $this->_hiddenPropsList)) {
-            if (substr($propName, 0, 1) === '_') {
-                if (strpos($propName, '_', 1) === false) {
-                    $result = true;
+        if ($this->getDatabase()) {
+            if ($this->_table && $key) {
+                $dbData = $this->getDatabase()->getByKey($this->_table, $key, $value);
+                $result = $this->setDataFromDB($dbData);
+            }
+        }
+        
+        return $result;
+    }
+    
+    public function save() {
+        $result = false;
+        
+        if ($this->getDatabase()) {
+            if ($this->_table) {
+                $data = $this->getDataForDB();
+                
+                if (count($data)) {
+                    if (! $this->id) {
+                        $id = $this->getDatabase()->addRecord($this->_table, $data);
+                        if ($id) {
+                            $this->id = $id;
+                            $result = $this->id;
+                        }
+                    } else {
+                        $this->getDatabase()->updateRecord($this->_table, $data);
+                        $result = $this->id;
+                    }
                 }
             }
         }
@@ -159,6 +157,34 @@ abstract class ModelDatabase extends ModelAbstract {
                 $result = $this->$methodName();
             } else {
                 $result = $this->$propertyName;
+            }
+        }
+        
+        return $result;
+    }
+    
+    public function setDatabase($database) {
+        $result = false;
+        if (is_object($database) && $database instanceof Database) {
+            $this->_database = $database;
+            $result = true;
+        }
+        
+        return $result;
+    }
+    
+    protected function getDatabase() {
+        return $this->_database;
+    }
+    
+    protected function isDataProp($propName) {
+        $result = false;
+        
+        if (! in_array($propName, $this->_hiddenPropsList)) {
+            if (substr($propName, 0, 1) === '_') {
+                if (strpos($propName, '_', 1) === false) {
+                    $result = true;
+                }
             }
         }
         

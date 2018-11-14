@@ -18,6 +18,7 @@ final class ModelRequestTest extends TestCase {
         parent::__construct();
         
         $this->_modelSite = Factory::instance()->createModelSite();
+        $this->_modelSite->create();
         
         $this->_modelRequest = Factory::instance()->createModelRequest($this->_modelSite);
     }

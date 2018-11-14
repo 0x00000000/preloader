@@ -12,4 +12,6 @@ abstract class ModelAbstract {
     
     abstract public function getDataAssoc();
     
+    abstract public function setDatabase($database);
+    
 }

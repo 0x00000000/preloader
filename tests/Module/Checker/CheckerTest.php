@@ -18,10 +18,9 @@ final class CheckerTest extends TestCase {
     public function __construct() {
         parent::__construct();
         
-        $modelSite = Factory::instance()->createModelSite();
-        
         $this->_modelSite = Factory::instance()->createModelSite();
-        $this->_modelRequest = Factory::instance()->createModelRequest($modelSite);
+        $this->_modelSite->create();
+        $this->_modelRequest = Factory::instance()->createModelRequest($this->_modelSite);
         $this->_modelRequest->create();
         $this->_router = Factory::instance()->createRouter($this->_modelRequest);
         
