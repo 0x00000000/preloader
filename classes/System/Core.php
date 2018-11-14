@@ -97,12 +97,12 @@ class Core {
                 Factory::instance()->setTestMode();
             }
             
-            $database = Factory::instance()->createDatabase();
-            Factory::instance()->setDatabase($database);
-            
             Factory::instance()->createRegistry();
             
             Factory::instance()->createConfig();
+            
+            $database = Factory::instance()->createDatabase();
+            Factory::instance()->setDatabase($database);
             
         }
         return $result;

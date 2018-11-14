@@ -26,7 +26,6 @@ final class RegistryTest extends TestCase {
         $registry->set($keyArray, $valueArray);
         $testValue = $registry->get($keyArray);
         $this->assertEquals($testValue,  $valueArray);
-        
     }
     
 }

@@ -25,6 +25,22 @@ final class FactoryTest extends TestCase {
         $this->_router = Factory::instance()->createRouter($this->_modelRequest);
     }
     
+    public function testSetDatabase() {
+        $moduleName = 'Logger';
+        $notDatabase = Factory::instance()->createModule($moduleName );
+        $this->assertFalse(Factory::instance()->setDatabase($notDatabase));
+        
+        $moduleBaseName = 'Database';
+        $moduleName = $moduleBaseName . 'Mysql';
+        $database = Factory::instance()->createModule($moduleName, $moduleBaseName);
+        $this->assertTrue(Factory::instance()->setDatabase($database));
+        
+        $moduleBaseName = 'Database';
+        $moduleName = $moduleBaseName . 'Test';
+        $database = Factory::instance()->createModule($moduleName, $moduleBaseName);
+        $this->assertTrue(Factory::instance()->setDatabase($database));
+    }
+    
     public function testCreateModule() {
         $router = Factory::instance()->createTypedModule('Router');
         $this->assertTrue(is_object($router));

@@ -53,4 +53,10 @@ final class RouterTest extends TestCase {
         $this->assertTrue($router->setModelRequest($this->_modelRequest));
     }
     
+    public function testCostants() {
+        $this->assertTrue(! empty(Router::REQUEST_TYPE_ADMIN));
+        $this->assertTrue(! empty(Router::REQUEST_TYPE_AJAX));
+        $this->assertTrue(! empty(Router::REQUEST_TYPE_CLIENT));
+    }
+    
 }

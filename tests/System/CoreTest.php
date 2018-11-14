@@ -11,7 +11,7 @@ include_once(dirname(__FILE__) . '/../init.php');
 final class CoreTest extends TestCase {
     
     public function testGetApplicationType(): void {
-        $this->assertEquals(Core::getApplicationType('Eresus'), 'Eresus');
+        $this->assertEquals(Core::getApplicationType(), 'Eresus');
     }
     
     public function testGetNamespace(): void {

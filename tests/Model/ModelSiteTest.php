@@ -12,17 +12,18 @@ Core::loadModule('ModelSite');
 
 final class ModelSiteTest extends TestCase {
     
-    public function testGetByUrl(): void {
+    public function testCreate(): void {
         $modelSite = Factory::instance()->createModelSite();
         $modelSite->create();
-        $this->assertTrue($modelSite->getByUrl(ModelSite::UNKNOWN_SERVER_NAME));
+        
         $this->assertEquals($modelSite->url, ModelSite::UNKNOWN_SERVER_NAME);
         $this->assertEquals($modelSite->name, ModelSite::UNKNOWN_SERVER_NAME);
     }
     
-    public function testProperties(): void {
+    public function testGetByUrl(): void {
         $modelSite = Factory::instance()->createModelSite();
         $modelSite->create();
+        $this->assertTrue($modelSite->getByUrl(ModelSite::UNKNOWN_SERVER_NAME));
         $this->assertEquals($modelSite->url, ModelSite::UNKNOWN_SERVER_NAME);
         $this->assertEquals($modelSite->name, ModelSite::UNKNOWN_SERVER_NAME);
     }
@@ -52,6 +53,10 @@ final class ModelSiteTest extends TestCase {
         $dataAfterUpdatedGet = $modelSiteUpdatedGet->getDataAssoc();
         
         $this->assertEquals($dataAfterUpdated, $dataAfterUpdatedGet);
+    }
+    
+    public function testCostants() {
+        $this->assertTrue(! empty(ModelSite::UNKNOWN_SERVER_NAME));
     }
     
 }

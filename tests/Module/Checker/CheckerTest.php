@@ -27,7 +27,7 @@ final class CheckerTest extends TestCase {
         $this->_checker = Factory::instance()->createChecker($this->_modelRequest, $this->_router);
     }
     
-    public function testModelSite() {
+    public function testModelRequest() {
         $checker = Factory::instance()->createTypedModule('Checker');
         $notModelRequest = Factory::instance()->createModelSite();
         

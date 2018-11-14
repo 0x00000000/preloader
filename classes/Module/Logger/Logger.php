@@ -78,7 +78,7 @@ class Logger {
         return $result;
     }
     
-    public function getModelSite() {
+    protected function getModelSite() {
         return $this->_modelSite;
     }
     

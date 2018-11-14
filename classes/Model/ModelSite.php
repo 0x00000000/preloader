@@ -5,13 +5,13 @@ namespace preloader;
 include_once('ModelDatabase.php');
 
 class ModelSite extends ModelDatabase {
+    const UNKNOWN_SERVER_NAME = 'UNKNOWN_SERVER_NAME';
+    
     protected $_id = null;
     protected $_url = null;
     protected $_name = null;
     
     protected $_table = 'site';
-    
-    const UNKNOWN_SERVER_NAME = 'UNKNOWN_SERVER_NAME';
     
     public function __construct() {
         parent::__construct();

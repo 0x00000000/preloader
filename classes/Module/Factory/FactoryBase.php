@@ -71,7 +71,7 @@ abstract class FactoryBase extends Factory {
     
     public function createModelSite() {
         $modelName = 'ModelSite';
-        $model = Factory::instance()->createModel($modelName);
+        $model = $this->createModel($modelName);
         if ($this->getDatabase()) {
             $model->setDatabase($this->getDatabase());
         }
@@ -80,7 +80,7 @@ abstract class FactoryBase extends Factory {
     
     public function createModelRequest($modelSite) {
         $modelName = 'ModelRequest';
-        $model = Factory::instance()->createModel($modelName);
+        $model = $this->createModel($modelName);
         $model->setModelSite($modelSite);
         if ($this->getDatabase()) {
             $model->setDatabase($this->getDatabase());
@@ -90,7 +90,7 @@ abstract class FactoryBase extends Factory {
     
     public function createModelLog($modelSite, $modelRequest) {
         $modelName = 'ModelLog';
-        $model = Factory::instance()->createModel($modelName);
+        $model = $this->createModel($modelName);
         $model->setModelSite($modelSite);
         $model->setModelRequest($modelRequest);
         if ($this->getDatabase()) {
@@ -112,7 +112,7 @@ abstract class FactoryBase extends Factory {
     
     public function createChecker($modelRequest, $router) {
         $moduleBaseName = 'Checker';
-        $object = Factory::instance()->createTypedModule($moduleBaseName);
+        $object = $this->createTypedModule($moduleBaseName);
         $object->setModelRequest($modelRequest);
         $object->setRouter($router);
         return $object;
@@ -139,7 +139,7 @@ abstract class FactoryBase extends Factory {
     
     public function createLogger($modelSite, $modelRequest) {
         $moduleName = 'Logger';
-        $object = Factory::instance()->createModule($moduleName );
+        $object = $this->createModule($moduleName );
         $object->setModelSite($modelSite);
         $object->setModelRequest($modelRequest);
         return $object;
@@ -147,13 +147,13 @@ abstract class FactoryBase extends Factory {
     
     public function createRegistry() {
         $moduleName = 'Registry';
-        $object = Factory::instance()->createModule($moduleName);
+        $object = $this->createModule($moduleName);
         return $object;
     }
     
     public function createRouter($modelRequest) {
         $moduleBaseName = 'Router';
-        $object = Factory::instance()->createTypedModule($moduleBaseName);
+        $object = $this->createTypedModule($moduleBaseName);
         $object->setModelRequest($modelRequest);
         return $object;
     }

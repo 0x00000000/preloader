@@ -18,7 +18,7 @@ final class ConfigTest extends TestCase {
         $this->assertTrue(is_string($config->get('database', 'name')));
     }
     
-    public function testSet(): void {
+    public function testAdd(): void {
         $config = Factory::instance()->createConfig();
         
         $stringValue = 'Test value';

@@ -30,17 +30,24 @@ final class ModelLogTest extends TestCase {
         $this->_logData = $this->getTestData();
     }
     
-    private function getTestData() {
-        return array(
-            'level' => ModelLog::LEVEL_ERROR,
-            'message' => 'Test message',
-            'description' => 'Test description',
-            'data' => array('test' => true),
-            'code' => E_ERROR,
-            'file' => 'log.php',
-            'line' => 255,
-            'url' => 'http://test.example.com/',
+    public function testCreate() {
+        $id = $this->_modelLog->create(
+            $this->_logData['level'], $this->_logData['message'], $this->_logData['description'],
+            $this->_logData['data'],
+            $this->_logData['code'], $this->_logData['file'], $this->_logData['line'], $this->_logData['url']
         );
+        
+        $this->assertEquals($this->_modelLog->level, $this->_logData['level']);
+        $this->assertEquals($this->_modelLog->message, $this->_logData['message']);
+        $this->assertEquals($this->_modelLog->description, $this->_logData['description']);
+        $this->assertEquals($this->_modelLog->data, $this->_logData['data']);
+        $this->assertEquals($this->_modelLog->code, $this->_logData['code']);
+        $this->assertEquals($this->_modelLog->file, $this->_logData['file']);
+        $this->assertEquals($this->_modelLog->line, $this->_logData['line']);
+        $this->assertEquals($this->_modelLog->url, $this->_logData['url']);
+        
+        $this->assertEquals($this->_modelLog->siteId, $this->_modelSite->id);
+        $this->assertEquals($this->_modelLog->requestId, $this->_modelRequest->id);
     }
     
     public function testData() {
@@ -69,23 +76,6 @@ final class ModelLogTest extends TestCase {
         $this->_modelLog->setData($data);
         $testData = $this->_modelLog->getData();
         $this->assertEquals($data, $testData);
-    }
-        
-    public function testCreate() {
-        $id = $this->_modelLog->create(
-            $this->_logData['level'], $this->_logData['message'], $this->_logData['description'],
-            $this->_logData['data'],
-            $this->_logData['code'], $this->_logData['file'], $this->_logData['line'], $this->_logData['url']
-        );
-        
-        $this->assertEquals($this->_modelLog->level, $this->_logData['level']);
-        $this->assertEquals($this->_modelLog->message, $this->_logData['message']);
-        $this->assertEquals($this->_modelLog->description, $this->_logData['description']);
-        $this->assertEquals($this->_modelLog->data, $this->_logData['data']);
-        $this->assertEquals($this->_modelLog->code, $this->_logData['code']);
-        $this->assertEquals($this->_modelLog->file, $this->_logData['file']);
-        $this->assertEquals($this->_modelLog->line, $this->_logData['line']);
-        $this->assertEquals($this->_modelLog->url, $this->_logData['url']);
     }
     
     public function testCritical() {
@@ -215,6 +205,26 @@ final class ModelLogTest extends TestCase {
         $dataAfterUpdatedGet = $modelLogUpdatedGet->getDataAssoc();
         
         $this->assertEquals($dataAfterUpdated, $dataAfterUpdatedGet);
+    }
+    
+    private function getTestData() {
+        return array(
+            'level' => ModelLog::LEVEL_ERROR,
+            'message' => 'Test message',
+            'description' => 'Test description',
+            'data' => array('test' => true),
+            'code' => E_ERROR,
+            'file' => 'log.php',
+            'line' => 255,
+            'url' => 'http://test.example.com/',
+        );
+    }
+    
+    public function testCostants() {
+        $this->assertTrue(! empty(ModelLog::LEVEL_CRITICAL));
+        $this->assertTrue(! empty(ModelLog::LEVEL_ERROR));
+        $this->assertTrue(! empty(ModelLog::LEVEL_WARNING));
+        $this->assertTrue(! empty(ModelLog::LEVEL_NOTICE));
     }
     
 }

@@ -23,6 +23,13 @@ final class ModelRequestTest extends TestCase {
         $this->_modelRequest = Factory::instance()->createModelRequest($this->_modelSite);
     }
     
+    public function testCreate() {
+        $id = $this->_modelRequest->create();
+        
+        $this->assertEquals($this->_modelRequest->url, ModelRequest::UNKNOWN_REQUEST_URI);
+        $this->assertEquals($this->_modelRequest->siteId, $this->_modelSite->id);
+    }
+    
     public function testGet(): void {
         $data = array();
         $this->_modelRequest->setGet($data);
@@ -150,6 +157,10 @@ final class ModelRequestTest extends TestCase {
         $dataAfterUpdatedGet = $modelRequestUpdatedGet->getDataAssoc();
         
         $this->assertEquals($dataAfterUpdated, $dataAfterUpdatedGet);
+    }
+    
+    public function testCostants() {
+        $this->assertTrue(! empty(ModelRequest::UNKNOWN_REQUEST_URI));
     }
     
 }

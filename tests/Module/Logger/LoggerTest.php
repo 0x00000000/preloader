@@ -11,18 +11,20 @@ include_once(dirname(__FILE__) . '/../../init.php');
 final class LoggerTest extends TestCase {
     protected $_logger = null;
     
+    protected $_modelSite = null;
+    
     protected $_modelRequest = null;
     
     public function __construct() {
         parent::__construct();
         
-        $modelSite = Factory::instance()->createModelSite();
-        $modelSite->create();
+        $this->_modelSite = Factory::instance()->createModelSite();
+        $this->_modelSite->create();
         
-        $this->_modelRequest = Factory::instance()->createModelRequest($modelSite);
+        $this->_modelRequest = Factory::instance()->createModelRequest($this->_modelSite);
         $this->_modelRequest->create();
         
-        $this->_logger = Factory::instance()->createLogger($modelSite, $this->_modelRequest);
+        $this->_logger = Factory::instance()->createLogger($this->_modelSite, $this->_modelRequest);
     }
     
     public function testLogCritical() {
@@ -57,9 +59,18 @@ final class LoggerTest extends TestCase {
         $this->assertTrue($result);
     }
     
-    public function testModelSite() {
+    public function testSetModelSite() {
         $logger = Factory::instance()->createModule('Logger');
-        $notModelRequest = Factory::instance()->createModelSite();
+        $notModelSite = $this->_modelRequest;
+        
+        $this->assertFalse($logger->setModelSite($notModelSite));
+        
+        $this->assertTrue($logger->setModelSite($this->_modelSite));
+    }
+    
+    public function testSetModelRequest() {
+        $logger = Factory::instance()->createModule('Logger');
+        $notModelRequest = $this->_modelSite;
         
         $this->assertFalse($logger->setModelRequest($notModelRequest));
         
