@@ -44,16 +44,13 @@ final class RouterTest extends TestCase {
         $this->assertEquals($testSiteRoot, $siteRoot);
     }
     
-    public function testModelSite() {
+    public function testModelSite(): void {
         $router = Factory::instance()->createTypedModule('Router');
-        $notModelRequest = Factory::instance()->createModelSite();
-        
-        $this->assertFalse($router->setModelRequest($notModelRequest));
         
         $this->assertTrue($router->setModelRequest($this->_modelRequest));
     }
     
-    public function testCostants() {
+    public function testCostants(): void {
         $this->assertTrue(! empty(Router::REQUEST_TYPE_ADMIN));
         $this->assertTrue(! empty(Router::REQUEST_TYPE_AJAX));
         $this->assertTrue(! empty(Router::REQUEST_TYPE_CLIENT));

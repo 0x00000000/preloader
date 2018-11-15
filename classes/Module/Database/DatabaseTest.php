@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('Database.php');
@@ -13,8 +15,8 @@ class DatabaseTest extends Database {
         
     }
     
-    public function getById($table, $id) {
-        $result = false;
+    public function getById(string $table, string $id): ?array {
+        $result = null;
         
         if (array_key_exists($table, $this->_data)) {
             if (array_key_exists($id, $this->_data[$table])) {
@@ -25,8 +27,8 @@ class DatabaseTest extends Database {
         return $result;
     }
     
-    public function getByKey($table, $key, $value) {
-        $result = false;
+    public function getByKey(string $table, string $key, string $value): ?array {
+        $result = null;
         
         if ($key === 'id') {
             $result = $this->getById($table, $value);
@@ -44,8 +46,8 @@ class DatabaseTest extends Database {
         return $result;
     }
     
-    public function addRecord($table, $data) {
-        $result = false;
+    public function addRecord(string $table, array $data): ?string {
+        $result = null;
         
         if (is_array($data) && count($data)) {
             if (! array_key_exists($table, $this->_data)) {
@@ -53,16 +55,17 @@ class DatabaseTest extends Database {
             }
             
             $this->_lastId++;
-            $data['id'] = $this->_lastId;
-            $this->_data[$table][$this->_lastId] = $data;
-            $result = $this->_lastId;
+            $stringId = (string) $this->_lastId;
+            $data['id'] = $stringId;
+            $this->_data[$table][$stringId] = $data;
+            $result = $stringId;
         }
         
         return $result;
     }
     
-    public function updateRecord($table, $data, $primaryKey = 'id') {
-        $result = false;
+    public function updateRecord(string $table, array $data, string $primaryKey = 'id'): ?string {
+        $result = null;
         
         if (is_array($data) && count($data) && array_key_exists($primaryKey, $data) && $data[$primaryKey]) {
             // For this implementation DB we may ignore $primaryKey name and use it`s value.
@@ -75,7 +78,7 @@ class DatabaseTest extends Database {
                 }
                 
                 $this->_data[$table][$data[$primaryKey]] = $record;
-                $result = $data[$primaryKey];
+                $result = (string) $data[$primaryKey];
             }
         }
         

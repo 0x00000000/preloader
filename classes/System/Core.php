@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('FileSystem.php');
@@ -14,7 +16,7 @@ class Core {
     
     private static $_namespace = 'preloader\\';
     
-    public static function setApplicationType($applicationType, $isTestMode = false) {
+    public static function setApplicationType(string $applicationType, bool $isTestMode = false): bool {
         $result = false;
         
         if (! self::$_applicationType) {
@@ -30,15 +32,15 @@ class Core {
         return $result;
     }
     
-    public static function getApplicationType() {
+    public static function getApplicationType(): ?string {
         return self::$_applicationType;
     }
     
-    public static function getNamespace() {
+    public static function getNamespace(): string {
         return self::$_namespace;
     }
     
-    public static function loadModule($moduleName, $moduleBaseName = null) {
+    public static function loadModule(string $moduleName, string $moduleBaseName = null): bool {
         $result = false;
         
         if ($moduleName) {
@@ -60,7 +62,7 @@ class Core {
         return $result;
     }
     
-    public static function loadModel($modelName) {
+    public static function loadModel(string $modelName): bool {
         $result = false;
         
         $root = FileSystem::getRoot();
@@ -76,7 +78,7 @@ class Core {
         return $result;
     }
     
-    public static function FatalError($message = null) {
+    public static function FatalError(string $message = null): void {
         $errorMessage = 'Fatal error.';
         if ($message) {
             $errorMessage .= ' ' . $message;
@@ -85,7 +87,7 @@ class Core {
         die($errorMessage);
     }
     
-    private static function init() {
+    private static function init(): bool {
         $result = false;
         
         if (self::getApplicationType()) {

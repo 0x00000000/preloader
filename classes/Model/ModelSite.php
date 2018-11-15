@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('ModelDatabase.php');
 
 class ModelSite extends ModelDatabase {
-    const UNKNOWN_SERVER_NAME = 'UNKNOWN_SERVER_NAME';
+    public const UNKNOWN_SERVER_NAME = 'UNKNOWN_SERVER_NAME';
     
     protected $_id = null;
     protected $_url = null;
@@ -17,13 +19,13 @@ class ModelSite extends ModelDatabase {
         parent::__construct();
     }
     
-    public function create() {
+    public function create(): void {
         if (array_key_exists('SERVER_NAME', $_SERVER)) {
             $url = preg_replace('/^www\./i', '', $_SERVER['SERVER_NAME']);
         } else {
             $url = self::UNKNOWN_SERVER_NAME;
         }
-        $found = $this->getByUrl($url);
+        $found = $this->loadByUrl($url);
         if (! $found) {
             $this->url = $url;
             $this->name = $url;
@@ -31,8 +33,8 @@ class ModelSite extends ModelDatabase {
         }
     }
     
-    public function getByUrl($name) {
-        return $this->getByKey('url', $name);
+    public function loadByUrl(string $name): bool {
+        return $this->loadByKey('url', $name);
     }
     
 }

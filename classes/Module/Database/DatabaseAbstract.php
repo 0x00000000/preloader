@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 abstract class DatabaseAbstract {
     
-    abstract public function getById($table, $id);
+    abstract public function getById(string $table, string $id): ?array;
     
-    abstract public function getByKey($table, $key, $value);
+    abstract public function getByKey(string $table, string $key, string $value): ?array;
     
-    abstract public function addRecord($table, $data);
+    abstract public function addRecord(string $table, array $data): ?string;
     
-    abstract public function updateRecord($table, $data, $primaryKey = 'id');
+    abstract public function updateRecord(string $table, array $data, string $primaryKey = 'id'): ?string;
     
 }

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('CheckerBase.php');
 
 class CheckerEresus extends CheckerBase {
     
-    protected function checkAdminRequest() {
+    protected function checkAdminRequest(): bool {
         
         $result = false;
         

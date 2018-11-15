@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 abstract class ConfigAbstract {
     
-    abstract public function get($section, $name = null);
+    abstract public function get(string $section, string $name = null);
     
-    abstract public function add($section, $name, $value);
+    abstract public function add(string $section, string $name, $value): bool;
     
 }

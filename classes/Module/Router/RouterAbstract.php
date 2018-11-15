@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 abstract class RouterAbstract {
     
-    const REQUEST_TYPE_ADMIN = 'admin';
-    const REQUEST_TYPE_AJAX = 'ajax';
-    const REQUEST_TYPE_CLIENT = 'client';
+    public const REQUEST_TYPE_ADMIN = 'admin';
+    public const REQUEST_TYPE_AJAX = 'ajax';
+    public const REQUEST_TYPE_CLIENT = 'client';
     
-    abstract public function getRequestType();
+    abstract public function getRequestType(): string;
     
-    abstract public function route();
+    abstract public function route(): void;
     
-    abstract public function getSiteRoot();
+    abstract public function getSiteRoot(): string;
     
-    abstract public function setModelRequest($modelRequest);
+    abstract public function setModelRequest(ModelRequest $modelRequest): bool;
     
 }

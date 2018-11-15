@@ -20,15 +20,15 @@ final class ModelSiteTest extends TestCase {
         $this->assertEquals($modelSite->name, ModelSite::UNKNOWN_SERVER_NAME);
     }
     
-    public function testGetByUrl(): void {
+    public function testLoadByUrl(): void {
         $modelSite = Factory::instance()->createModelSite();
         $modelSite->create();
-        $this->assertTrue($modelSite->getByUrl(ModelSite::UNKNOWN_SERVER_NAME));
+        $this->assertTrue($modelSite->loadByUrl(ModelSite::UNKNOWN_SERVER_NAME));
         $this->assertEquals($modelSite->url, ModelSite::UNKNOWN_SERVER_NAME);
         $this->assertEquals($modelSite->name, ModelSite::UNKNOWN_SERVER_NAME);
     }
     
-    public function testDatabase() {
+    public function testDatabase(): void {
         $modelSiteSave = Factory::instance()->createModelSite();
         $modelSiteSave->create();
         $idSave = $modelSiteSave->save();
@@ -37,7 +37,7 @@ final class ModelSiteTest extends TestCase {
         
         $modelSiteGet = Factory::instance()->createModelSite();
         $modelSiteGet->create();
-        $modelSiteGet->getById($idSave);
+        $modelSiteGet->loadById($idSave);
         $dataAfterGet = $modelSiteGet->getDataAssoc();
         
         $this->assertEquals($dataAfterSave, $dataAfterGet);
@@ -48,14 +48,14 @@ final class ModelSiteTest extends TestCase {
         
         $modelSiteUpdatedGet = Factory::instance()->createModelSite();
         $modelSiteUpdatedGet->create();
-        $modelSiteUpdatedGet->getById($idGet);
+        $modelSiteUpdatedGet->loadById($idGet);
         
         $dataAfterUpdatedGet = $modelSiteUpdatedGet->getDataAssoc();
         
         $this->assertEquals($dataAfterUpdated, $dataAfterUpdatedGet);
     }
     
-    public function testCostants() {
+    public function testCostants(): void {
         $this->assertTrue(! empty(ModelSite::UNKNOWN_SERVER_NAME));
     }
     

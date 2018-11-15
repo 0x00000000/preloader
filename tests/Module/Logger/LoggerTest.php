@@ -27,7 +27,7 @@ final class LoggerTest extends TestCase {
         $this->_logger = Factory::instance()->createLogger($this->_modelSite, $this->_modelRequest);
     }
     
-    public function testLogCritical() {
+    public function testLogCritical(): void {
         $result = $this->_logger->logCritical(
             'Testing log critical caption', 'Testing log critical caption description'
         );
@@ -35,7 +35,7 @@ final class LoggerTest extends TestCase {
         $this->assertTrue($result);
     }
     
-    public function testLogError() {
+    public function testLogError(): void {
         $result = $this->_logger->logError(
             'Testing log error caption', 'Testing log error caption description'
         );
@@ -43,7 +43,7 @@ final class LoggerTest extends TestCase {
         $this->assertTrue($result);
     }
     
-    public function testLogWarning() {
+    public function testLogWarning(): void {
         $result = $this->_logger->logWarning(
             'Testing log warning caption', 'Testing log warning caption description'
         );
@@ -51,7 +51,7 @@ final class LoggerTest extends TestCase {
         $this->assertTrue($result);
     }
     
-    public function testLogNotice() {
+    public function testLogNotice(): void {
         $result = $this->_logger->logNotice(
             'Testing log notice caption', 'Testing log notice caption description'
         );
@@ -59,20 +59,14 @@ final class LoggerTest extends TestCase {
         $this->assertTrue($result);
     }
     
-    public function testSetModelSite() {
+    public function testSetModelSite(): void {
         $logger = Factory::instance()->createModule('Logger');
-        $notModelSite = $this->_modelRequest;
-        
-        $this->assertFalse($logger->setModelSite($notModelSite));
         
         $this->assertTrue($logger->setModelSite($this->_modelSite));
     }
     
-    public function testSetModelRequest() {
+    public function testSetModelRequest(): void {
         $logger = Factory::instance()->createModule('Logger');
-        $notModelRequest = $this->_modelSite;
-        
-        $this->assertFalse($logger->setModelRequest($notModelRequest));
         
         $this->assertTrue($logger->setModelRequest($this->_modelRequest));
     }

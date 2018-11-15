@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('Factory.php');
@@ -12,16 +14,17 @@ abstract class FactoryBase extends Factory {
     
     protected $_database = null;
     
-    public function setTestMode() {
+    public function setTestMode(): void {
         $this->_isTestMode = true;
     }
     
-    protected function isTestMode() {
+    protected function isTestMode(): bool {
         return $this->_isTestMode;
     }
     
-    public function setDatabase($database) {
+    public function setDatabase(Database $database): bool {
         $result = false;
+        
         if (is_object($database) && $database instanceof Database) {
             $this->_database = $database;
             $result = true;
@@ -30,12 +33,12 @@ abstract class FactoryBase extends Factory {
         return $result;
     }
     
-    protected function getDatabase() {
+    protected function getDatabase(): Database {
         return $this->_database;
     }
     
-    public function createModule($moduleName, $moduleBaseName = null) {
-        $result = false;
+    public function createModule(string $moduleName, string $moduleBaseName = null) {
+        $result = null;
         
         $loaded = Core::loadModule($moduleName, $moduleBaseName);
         if ($loaded) {
@@ -46,8 +49,8 @@ abstract class FactoryBase extends Factory {
         return $result;
     }
     
-    public function createTypedModule($moduleBaseName) {
-        $result = false;
+    public function createTypedModule(string $moduleBaseName) {
+        $result = null;
         
         if ($moduleBaseName) {
             $moduleName = $moduleBaseName . $this->_moduleNamePostfix;
@@ -57,8 +60,8 @@ abstract class FactoryBase extends Factory {
         return $result;
     }
     
-    public function createModel($modelName) {
-        $result = false;
+    public function createModel(string $modelName) {
+        $result = null;
         
         $loaded = Core::loadModel($modelName);
         if ($loaded) {
@@ -69,7 +72,7 @@ abstract class FactoryBase extends Factory {
         return $result;
     }
     
-    public function createModelSite() {
+    public function createModelSite(): ModelSite {
         $modelName = 'ModelSite';
         $model = $this->createModel($modelName);
         if ($this->getDatabase()) {
@@ -78,7 +81,7 @@ abstract class FactoryBase extends Factory {
         return $model;
     }
     
-    public function createModelRequest($modelSite) {
+    public function createModelRequest(ModelSite $modelSite): ModelRequest {
         $modelName = 'ModelRequest';
         $model = $this->createModel($modelName);
         $model->setModelSite($modelSite);
@@ -88,7 +91,7 @@ abstract class FactoryBase extends Factory {
         return $model;
     }
     
-    public function createModelLog($modelSite, $modelRequest) {
+    public function createModelLog(ModelSite $modelSite, ModelRequest $modelRequest): ModelLog {
         $modelName = 'ModelLog';
         $model = $this->createModel($modelName);
         $model->setModelSite($modelSite);
@@ -99,7 +102,7 @@ abstract class FactoryBase extends Factory {
         return $model;
     }
     
-    public function createApplication() {
+    public function createApplication(): Application {
         $moduleBaseName = 'Application';
         if (! $this->isTestMode()) {
             $object = $this->createTypedModule($moduleBaseName);
@@ -110,7 +113,7 @@ abstract class FactoryBase extends Factory {
         return $object;
     }
     
-    public function createChecker($modelRequest, $router) {
+    public function createChecker(ModelRequest $modelRequest, Router $router): Checker {
         $moduleBaseName = 'Checker';
         $object = $this->createTypedModule($moduleBaseName);
         $object->setModelRequest($modelRequest);
@@ -118,7 +121,7 @@ abstract class FactoryBase extends Factory {
         return $object;
     }
     
-    public function createConfig() {
+    public function createConfig(): Config {
         Core::loadModule('Config');
         $type = $this->_moduleNamePostfix;
         Config::setType($type);
@@ -126,7 +129,7 @@ abstract class FactoryBase extends Factory {
         return $object;
     }
     
-    public function createDatabase() {
+    public function createDatabase(): Database {
         $moduleBaseName = 'Database';
         if (! $this->isTestMode()) {
             $moduleName = $moduleBaseName . 'Mysql';
@@ -137,7 +140,7 @@ abstract class FactoryBase extends Factory {
         return $object;
     }
     
-    public function createLogger($modelSite, $modelRequest) {
+    public function createLogger(ModelSite $modelSite, ModelRequest $modelRequest): Logger {
         $moduleName = 'Logger';
         $object = $this->createModule($moduleName );
         $object->setModelSite($modelSite);
@@ -145,13 +148,13 @@ abstract class FactoryBase extends Factory {
         return $object;
     }
     
-    public function createRegistry() {
+    public function createRegistry(): Registry {
         $moduleName = 'Registry';
         $object = $this->createModule($moduleName);
         return $object;
     }
     
-    public function createRouter($modelRequest) {
+    public function createRouter(ModelRequest $modelRequest): Router {
         $moduleBaseName = 'Router';
         $object = $this->createTypedModule($moduleBaseName);
         $object->setModelRequest($modelRequest);

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('ApplicationBase.php');
 
 class ApplicationTest extends ApplicationBase {
     
-    public function run() {
+    public function run(): void {
         
         $this->logRequest();
         

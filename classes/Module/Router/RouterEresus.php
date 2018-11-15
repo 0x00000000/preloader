@@ -6,7 +6,7 @@ include_once('RouterBase.php');
 
 class RouterEresus extends RouterBase {
     
-    public function getRequestType() {
+    public function getRequestType(): string {
         $type = false;
         
         if ($this->getModelRequest()) {
@@ -23,7 +23,7 @@ class RouterEresus extends RouterBase {
         return $type;
     }
     
-    public function route() {
+    public function route(): void {
         // В Eresus используются глобальные переменные.
         // Они должны быть определены здесь.
         global $Eresus, $page, $db;

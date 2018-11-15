@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 class Registry {
     
     protected static $_data = array();
     
-    public static function get($name) {
+    public static function get(string $name) {
         $result = null;
         
         if (array_key_exists($name, self::$_data)) {
@@ -16,7 +18,7 @@ class Registry {
         return $result;
     }
     
-    public static function set($name, $object) {
+    public static function set(string $name, $object): bool {
         $result = false;
         
         if (! array_key_exists($name, self::$_data)) {

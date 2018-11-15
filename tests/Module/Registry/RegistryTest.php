@@ -10,7 +10,7 @@ include_once(dirname(__FILE__) . '/../../init.php');
 
 final class RegistryTest extends TestCase {
     
-    public function testSetGet() {
+    public function testSetGet(): void {
         $values[] = array('1', true, false, null, 'Test', "Test\nstring",);
         $keyArray = 'keyArray';
         $valueArray = array(1, 2, 'key' => 'val');

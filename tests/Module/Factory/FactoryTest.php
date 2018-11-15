@@ -25,10 +25,8 @@ final class FactoryTest extends TestCase {
         $this->_router = Factory::instance()->createRouter($this->_modelRequest);
     }
     
-    public function testSetDatabase() {
+    public function testSetDatabase(): void {
         $moduleName = 'Logger';
-        $notDatabase = Factory::instance()->createModule($moduleName );
-        $this->assertFalse(Factory::instance()->setDatabase($notDatabase));
         
         $moduleBaseName = 'Database';
         $moduleName = $moduleBaseName . 'Mysql';
@@ -41,7 +39,7 @@ final class FactoryTest extends TestCase {
         $this->assertTrue(Factory::instance()->setDatabase($database));
     }
     
-    public function testCreateModule() {
+    public function testCreateModule(): void {
         $router = Factory::instance()->createTypedModule('Router');
         $this->assertTrue(is_object($router));
         
@@ -53,7 +51,7 @@ final class FactoryTest extends TestCase {
         
     }
     
-    public function testCreateModel() {
+    public function testCreateModel(): void {
         $site = Factory::instance()->createModel('ModelSite');
         $this->assertTrue(is_object($site));
         
@@ -75,32 +73,32 @@ final class FactoryTest extends TestCase {
         
     }
     
-    public function testCreateChecker() {
+    public function testCreateChecker(): void {
         $checker = Factory::instance()->createChecker($this->_modelRequest, $this->_router);
         $this->assertTrue(is_object($checker));
     }
     
-    public function testCreateConfig() {
+    public function testCreateConfig(): void {
         $config = Factory::instance()->createConfig();
         $this->assertTrue(is_object($config));
     }
     
-    public function testCreateDatabase() {
+    public function testCreateDatabase(): void {
         $database = Factory::instance()->createDatabase();
         $this->assertTrue(is_object($database));
     }
     
-    public function createLogger() {
+    public function createLogger(): void {
         $logger = Factory::instance()->createLogger($this->_modelSite, $this->_modelRequest);
         $this->assertTrue(is_object($logger));
     }
     
-    public function createRegistry() {
+    public function createRegistry(): void {
         $registry = Factory::instance()->createRegistry();
         $this->assertTrue(is_object($registry));
     }
     
-    public function testCreateRouter() {
+    public function testCreateRouter(): void {
         $router = Factory::instance()->createRouter($this->_modelRequest);
         $this->assertTrue(is_object($router));
     }

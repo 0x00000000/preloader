@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('ModelDatabase.php');
 
 class ModelLog extends ModelDatabase {
-    const LEVEL_CRITICAL = 1;
-    const LEVEL_ERROR = 2;
-    const LEVEL_WARNING = 4;
-    const LEVEL_NOTICE = 8;
+    public const LEVEL_CRITICAL = 1;
+    public const LEVEL_ERROR = 2;
+    public const LEVEL_WARNING = 4;
+    public const LEVEL_NOTICE = 8;
     
     protected $_id = null;
     protected $_siteId = null;
@@ -36,9 +38,10 @@ class ModelLog extends ModelDatabase {
     }
     
     public function create(
-        $level, $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null, $url = null
-    ) {
+        int $level, string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null, string $url = null
+    ): bool {
         $result = false;
         
         if ($this->getModelRequest()) {
@@ -76,9 +79,10 @@ class ModelLog extends ModelDatabase {
     }
     
     public function createCritical(
-        $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null, $url = null
-    ) {
+        string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null, string $url = null
+    ): bool {
         if ($code === null) {
             $code = E_USER_ERROR;
         }
@@ -86,9 +90,10 @@ class ModelLog extends ModelDatabase {
     }
     
     public function createError(
-        $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null, $url = null
-    ) {
+        string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null, string $url = null
+    ): bool {
         if ($code === null) {
             $code = E_USER_ERROR;
         }
@@ -96,9 +101,10 @@ class ModelLog extends ModelDatabase {
     }
     
     public function createWarning(
-        $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null, $url = null
-    ) {
+        string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null, string $url = null
+    ): bool {
         if ($code === null) {
             $code = E_USER_WARNING;
         }
@@ -106,16 +112,17 @@ class ModelLog extends ModelDatabase {
     }
     
     public function createNotice(
-        $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null, $url = null
-    ) {
+        string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null, string $url = null
+    ): bool {
        if ($code === null) {
             $code = E_USER_NOTICE ;
         }
         return $this->create(self::LEVEL_NOTICE, $message, $description, $data, $code, $file, $line, $url);
     }
     
-    protected function checkLevel($level) {
+    protected function checkLevel(int $level): bool {
         $result = false;
         
         if ($level) {
@@ -132,7 +139,7 @@ class ModelLog extends ModelDatabase {
         return $result;
     }
     
-    protected function setMessage($value) {
+    protected function setMessage(string $value): void {
         $maxMessageLength = 255;
         
         if ($value) {
@@ -144,7 +151,7 @@ class ModelLog extends ModelDatabase {
         $this->_message = $value;
     }
     
-    protected function setUrl($value) {
+    protected function setUrl(string $value): void {
         $maxUrlLength = 255;
         
         if ($value) {
@@ -160,16 +167,17 @@ class ModelLog extends ModelDatabase {
         return $this->_data ? json_decode($this->_data, true) : null;
     }
     
-    public function setData($value) {
+    public function setData($value): void {
         $this->_data = json_encode($value);
     }
     
-    protected function getModelSite() {
+    protected function getModelSite(): ModelSite {
         return $this->_modelSite;
     }
     
-    public function setModelSite($modelSite) {
+    public function setModelSite(ModelSite $modelSite): bool {
         $result = false;
+        
         if (is_object($modelSite) && $modelSite instanceof ModelSite) {
             $this->_modelSite = $modelSite;
             $result = true;
@@ -178,12 +186,13 @@ class ModelLog extends ModelDatabase {
         return $result;
     }
     
-    protected function getModelRequest() {
+    protected function getModelRequest(): ModelRequest {
         return $this->_modelRequest;
     }
     
-    public function setModelRequest($modelRequest) {
+    public function setModelRequest(ModelRequest $modelRequest): bool {
         $result = false;
+        
         if (is_object($modelRequest) && $modelRequest instanceof ModelRequest) {
             $this->_modelRequest = $modelRequest;
             $result = true;

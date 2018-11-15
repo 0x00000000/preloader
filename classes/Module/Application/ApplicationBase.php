@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('Application.php');
@@ -36,7 +38,7 @@ abstract class ApplicationBase extends Application {
         error_reporting(E_ALL);
     }
     
-    public function run() {
+    public function run(): void {
         
         $this->logRequest();
         
@@ -49,7 +51,7 @@ abstract class ApplicationBase extends Application {
         
     }
     
-    protected function logRequest() {
+    protected function logRequest(): void {
         $doLogRequest = false;
         
         if (Config::instance()->get('application', 'log_all_requests')) {
@@ -65,7 +67,7 @@ abstract class ApplicationBase extends Application {
         }
     }
     
-    protected function logUnacceptedRequest() {
+    protected function logUnacceptedRequest(): void {
         $description = '';
         $reports = $this->_checker->getCheckReports();
         if (is_array($reports) and count($reports)) {
@@ -73,11 +75,11 @@ abstract class ApplicationBase extends Application {
         }
         $this->_logger->logNotice(
             'Request was blocked', $description,
-            '', null, __FILE__, __LINE__
+            null, null, __FILE__, __LINE__
         );
     }
     
-    protected function initSession() {
+    protected function initSession(): void {
         
         $session_name = Config::instance()->get('application', 'session_name');
         if ($session_name) {

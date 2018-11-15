@@ -6,7 +6,7 @@ include_once('RouterBase.php');
 
 class RouterJoomla extends RouterBase {
     
-    public function getRequestType() {
+    public function getRequestType(): string {
         $type = false;
         
         if ($this->getModelRequest()) {
@@ -21,7 +21,7 @@ class RouterJoomla extends RouterBase {
         return $type;
     }
     
-    public function route() {
+    public function route(): void {
         // Routing is not used.
     }
     

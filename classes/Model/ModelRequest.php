@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('ModelDatabase.php');
 
 class ModelRequest extends ModelDatabase {
-    const UNKNOWN_REQUEST_URI = 'UNKNOWN_REQUEST_URI';
+    public const UNKNOWN_REQUEST_URI = 'UNKNOWN_REQUEST_URI';
     
     protected $_id = null;
     protected $_siteId = null;
@@ -61,7 +63,7 @@ class ModelRequest extends ModelDatabase {
         return $this->_get ? json_decode($this->_get, true) : null;
     }
     
-    public function setGet($value) {
+    public function setGet($value): void {
         $this->_get = json_encode($value);
     }
     
@@ -69,7 +71,7 @@ class ModelRequest extends ModelDatabase {
         return $this->_post ? json_decode($this->_post, true) : null;
     }
     
-    public function setPost($value) {
+    public function setPost($value): void {
         $this->_post = json_encode($value);
     }
     
@@ -77,7 +79,7 @@ class ModelRequest extends ModelDatabase {
         return $this->_session ? json_decode($this->_session, true) : null;
     }
     
-    public function setSession($value) {
+    public function setSession($value): void {
         $this->_session = json_encode($value);
     }
     
@@ -85,15 +87,15 @@ class ModelRequest extends ModelDatabase {
         return $this->_headers ? json_decode($this->_headers, true) : null;
     }
     
-    public function setHeaders($value) {
+    public function setHeaders($value): void {
         $this->_headers = json_encode($value);
     }
     
-    protected function getModelSite() {
+    protected function getModelSite(): ModelSite {
         return $this->_modelSite;
     }
     
-    public function setModelSite($modelSite) {
+    public function setModelSite(ModelSite $modelSite): bool {
         $result = false;
         if (is_object($modelSite) && $modelSite instanceof ModelSite) {
             $this->_modelSite = $modelSite;

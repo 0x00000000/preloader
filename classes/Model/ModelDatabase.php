@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('ModelAbstract.php');
@@ -13,34 +15,38 @@ abstract class ModelDatabase extends ModelAbstract {
     public function __construct() {
     }
     
-    public function getById($id) {
+    public function loadById(string $id): bool {
         $result = false;
         
         if ($this->getDatabase()) {
             if ($this->_table && $id) {
                 $dbData = $this->getDatabase()->getById($this->_table, $id);
-                $result = $this->setDataFromDB($dbData);
+                if ($dbData) {
+                    $result = $this->setDataFromDB($dbData);
+                }
             }
         }
         
         return $result;
     }
     
-    public function getByKey($key, $value) {
+    public function loadByKey(string $key, string $value): bool {
         $result = false;
         
         if ($this->getDatabase()) {
             if ($this->_table && $key) {
                 $dbData = $this->getDatabase()->getByKey($this->_table, $key, $value);
-                $result = $this->setDataFromDB($dbData);
+                if ($dbData) {
+                    $result = $this->setDataFromDB($dbData);
+                }
             }
         }
         
         return $result;
     }
     
-    public function save() {
-        $result = false;
+    public function save(): ?string {
+        $result = null;
         
         if ($this->getDatabase()) {
             if ($this->_table) {
@@ -64,7 +70,7 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
-    public function getDataAssoc() {
+    public function getDataAssoc(): array {
         $data = array();
         
         foreach ($this as $propName => $value) {
@@ -79,7 +85,21 @@ abstract class ModelDatabase extends ModelAbstract {
         return $data;
     }
     
-    private function getDataForDB() {
+    public function setDatabase(Database $database): bool {
+        $result = false;
+        if (is_object($database) && $database instanceof Database) {
+            $this->_database = $database;
+            $result = true;
+        }
+        
+        return $result;
+    }
+    
+    protected function getDatabase() {
+        return $this->_database;
+    }
+    
+    private function getDataForDB(): array {
         $data = $this->getDataAssoc();
         $dbData = array();
         
@@ -99,7 +119,7 @@ abstract class ModelDatabase extends ModelAbstract {
         return $dbData;
     }
     
-    private function setDataFromDB($dbData) {
+    private function setDataFromDB(array $dbData): bool {
         $result = false;
         $data = array();
         if (is_array($dbData)) {
@@ -135,7 +155,7 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
-    public function __set($name, $value) {
+    public function __set(string $name, $value): void {
         $propertyName = '_' . $name;
         if ($this->isDataProp($propertyName)) {
             $methodName = 'set' . ucfirst($name);
@@ -147,7 +167,7 @@ abstract class ModelDatabase extends ModelAbstract {
         }
     }
     
-    public function __get($name) {
+    public function __get(string $name) {
         $result = null;
         $propertyName = '_' . $name;
         
@@ -161,20 +181,6 @@ abstract class ModelDatabase extends ModelAbstract {
         }
         
         return $result;
-    }
-    
-    public function setDatabase($database) {
-        $result = false;
-        if (is_object($database) && $database instanceof Database) {
-            $this->_database = $database;
-            $result = true;
-        }
-        
-        return $result;
-    }
-    
-    protected function getDatabase() {
-        return $this->_database;
     }
     
     protected function isDataProp($propName) {

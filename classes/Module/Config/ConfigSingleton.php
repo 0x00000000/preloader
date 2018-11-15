@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('ConfigAbstract.php');
@@ -12,8 +14,8 @@ abstract class ConfigSingleton extends ConfigAbstract {
     
     protected static $_instance = null;
     
-    protected static function getModuleName() {
-        $moduleName = false;
+    protected static function getModuleName(): ?string {
+        $moduleName = null;
         
         if (self::$_baseType && self::$_type) {
             $moduleName = self::$_baseType . self::$_type;
@@ -22,11 +24,11 @@ abstract class ConfigSingleton extends ConfigAbstract {
         return $moduleName;
     }
     
-    protected static function getBaseModuleName() {
+    protected static function getBaseModuleName(): string {
         return self::$_baseType;
     }
     
-    public static function setType($type) {
+    public static function setType(string $type): bool {
         $result = false;
         
         if (! self::$_type) {
@@ -39,7 +41,7 @@ abstract class ConfigSingleton extends ConfigAbstract {
         return $result;
     }
     
-    public static function instance() {
+    public static function instance(): Config {
         if (! self::$_instance && self::$_type) {
             $moduleName = self::getModuleName();
             $baseModuleName = self::getBaseModuleName();

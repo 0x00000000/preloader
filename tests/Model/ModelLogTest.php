@@ -30,7 +30,7 @@ final class ModelLogTest extends TestCase {
         $this->_logData = $this->getTestData();
     }
     
-    public function testCreate() {
+    public function testCreate(): void {
         $id = $this->_modelLog->create(
             $this->_logData['level'], $this->_logData['message'], $this->_logData['description'],
             $this->_logData['data'],
@@ -50,7 +50,7 @@ final class ModelLogTest extends TestCase {
         $this->assertEquals($this->_modelLog->requestId, $this->_modelRequest->id);
     }
     
-    public function testData() {
+    public function testData(): void {
         $this->_modelLog->create(
             $this->_logData['level'], $this->_logData['message'], $this->_logData['description'],
             $this->_logData['data'],
@@ -78,7 +78,7 @@ final class ModelLogTest extends TestCase {
         $this->assertEquals($data, $testData);
     }
     
-    public function testCritical() {
+    public function testCritical(): void {
         $this->_modelLog->createCritical(
             $this->_logData['message'], $this->_logData['description'],
             $this->_logData['data'],
@@ -97,7 +97,7 @@ final class ModelLogTest extends TestCase {
         $this->assertEquals($this->_modelLog->code, E_USER_ERROR);
     }
     
-    public function testError() {
+    public function testError(): void {
         $this->_modelLog->createError(
             $this->_logData['message'], $this->_logData['description'],
             $this->_logData['data'],
@@ -116,7 +116,7 @@ final class ModelLogTest extends TestCase {
         $this->assertEquals($this->_modelLog->code, E_USER_ERROR);
     }
     
-    public function testWarning() {
+    public function testWarning(): void {
         $this->_modelLog->createWarning(
             $this->_logData['message'], $this->_logData['description'],
             $this->_logData['data'],
@@ -135,7 +135,7 @@ final class ModelLogTest extends TestCase {
         $this->assertEquals($this->_modelLog->code, E_USER_WARNING);
     }
     
-    public function testNotice() {
+    public function testNotice(): void {
         $this->_modelLog->createNotice(
             $this->_logData['message'], $this->_logData['description'],
             $this->_logData['data'],
@@ -154,25 +154,19 @@ final class ModelLogTest extends TestCase {
         $this->assertEquals($this->_modelLog->code, E_USER_NOTICE);
     }
     
-    public function testModelSite() {
+    public function testModelSite(): void {
         $modelLog = Factory::instance()->createModel('ModelLog');
-        $notModelSite = Factory::instance()->createModel('ModelLog');
-        
-        $this->assertFalse($modelLog->setModelSite($notModelSite));
         
         $this->assertTrue($modelLog->setModelSite($this->_modelSite));
     }
     
-    public function testModelRequest() {
+    public function testModelRequest(): void {
         $modelLog = Factory::instance()->createModel('ModelLog');
-        $notModelRequest = Factory::instance()->createModel('ModelLog');
-        
-        $this->assertFalse($modelLog->setModelRequest($notModelRequest));
         
         $this->assertTrue($modelLog->setModelRequest($this->_modelRequest));
     }
     
-    public function testDatabase() {
+    public function testDatabase(): void {
         $modelRequest = Factory::instance()->createModelRequest($this->_modelSite);
         $modelRequest->create();
         
@@ -190,7 +184,7 @@ final class ModelLogTest extends TestCase {
         $dataAfterSave = $modelLogSave->getDataAssoc();
         
         $modelLogGet = Factory::instance()->createModelLog($this->_modelSite, $modelRequest);
-        $modelLogGet->getById($idSave);
+        $modelLogGet->loadById($idSave);
         $dataAfterGet = $modelLogGet->getDataAssoc();
         
         $this->assertEquals($dataAfterSave, $dataAfterGet);
@@ -200,14 +194,14 @@ final class ModelLogTest extends TestCase {
         $dataAfterUpdated = $modelLogGet->getDataAssoc();
         
         $modelLogUpdatedGet = Factory::instance()->createModelLog($this->_modelSite, $modelRequest);
-        $modelLogUpdatedGet->getById($idGet);
+        $modelLogUpdatedGet->loadById($idGet);
         
         $dataAfterUpdatedGet = $modelLogUpdatedGet->getDataAssoc();
         
         $this->assertEquals($dataAfterUpdated, $dataAfterUpdatedGet);
     }
     
-    private function getTestData() {
+    private function getTestData(): array {
         return array(
             'level' => ModelLog::LEVEL_ERROR,
             'message' => 'Test message',
@@ -220,7 +214,7 @@ final class ModelLogTest extends TestCase {
         );
     }
     
-    public function testCostants() {
+    public function testCostants(): void {
         $this->assertTrue(! empty(ModelLog::LEVEL_CRITICAL));
         $this->assertTrue(! empty(ModelLog::LEVEL_ERROR));
         $this->assertTrue(! empty(ModelLog::LEVEL_WARNING));

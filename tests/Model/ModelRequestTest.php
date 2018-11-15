@@ -23,7 +23,7 @@ final class ModelRequestTest extends TestCase {
         $this->_modelRequest = Factory::instance()->createModelRequest($this->_modelSite);
     }
     
-    public function testCreate() {
+    public function testCreate(): void {
         $id = $this->_modelRequest->create();
         
         $this->assertEquals($this->_modelRequest->url, ModelRequest::UNKNOWN_REQUEST_URI);
@@ -122,17 +122,14 @@ final class ModelRequestTest extends TestCase {
         
     }
     
-    public function testModelSite() {
+    public function testModelSite(): void {
         $modelRequest = Factory::instance()->createModel('ModelRequest');
-        $notModelSite = Factory::instance()->createModel('ModelRequest');
-        
-        $this->assertFalse($modelRequest->setModelSite($notModelSite));
         
         $this->assertTrue($modelRequest->setModelSite($this->_modelSite));
         
     }
     
-    public function testDatabase() {
+    public function testDatabase(): void {
         $modelRequestSave = Factory::instance()->createModelRequest($this->_modelSite);
         $modelRequestSave->create();
         
@@ -142,7 +139,7 @@ final class ModelRequestTest extends TestCase {
         $dataAfterSave = $modelRequestSave->getDataAssoc();
         
         $modelRequestGet = Factory::instance()->createModelRequest($this->_modelSite);
-        $modelRequestGet->getById($idSave);
+        $modelRequestGet->loadById($idSave);
         $dataAfterGet = $modelRequestGet->getDataAssoc();
         
         $this->assertEquals($dataAfterSave, $dataAfterGet);
@@ -152,14 +149,14 @@ final class ModelRequestTest extends TestCase {
         $dataAfterUpdated = $modelRequestGet->getDataAssoc();
         
         $modelRequestUpdatedGet = Factory::instance()->createModelRequest($this->_modelSite);
-        $modelRequestUpdatedGet->getById($idGet);
+        $modelRequestUpdatedGet->loadById($idGet);
         
         $dataAfterUpdatedGet = $modelRequestUpdatedGet->getDataAssoc();
         
         $this->assertEquals($dataAfterUpdated, $dataAfterUpdatedGet);
     }
     
-    public function testCostants() {
+    public function testCostants(): void {
         $this->assertTrue(! empty(ModelRequest::UNKNOWN_REQUEST_URI));
     }
     

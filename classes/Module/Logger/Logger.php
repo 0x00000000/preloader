@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 class Logger {
@@ -12,34 +14,38 @@ class Logger {
     }
     
     public function logCritical(
-        $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null
-    ) {
+        string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null
+    ): bool {
         return self::logExtended('createCritical', $message, $description, $data, $code, $file, $line);
     }
     
     public function logError(
-        $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null
-    ) {
+        string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null
+    ): bool {
         return self::logExtended('createError', $message, $description, $data, $code, $file, $line);
     }
     
     public function logWarning(
-        $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null
-    ) {
+        string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null
+    ): bool {
         return self::logExtended('createWarning', $message, $description, $data, $code, $file, $line);
     }
     
     public function logNotice(
-        $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null
-    ) {
+        string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null
+    ): bool {
         return self::logExtended('createNotice', $message, $description, $data, $code, $file, $line);
     }
     
-    public function startErrorsLogging() {
+    public function startErrorsLogging(): void {
         set_error_handler(function($code, $message, $file, $line, $context) {
             var_export(array($code, $message, $file, $line));
             $this->logError('Error catched', $message, json_encode($context), $code, $file, $line);
@@ -56,9 +62,10 @@ class Logger {
     }
     
     protected function logExtended(
-        $methodName, $message, $description = null, $data = null, $code = null,
-        $file = null, $line = null
-    ) {
+        string $methodName, string $message, string $description = null,
+        array $data = null, int $code = null,
+        string $file = null, int $line = null
+    ): bool {
         $result = false;
         $modelLog = Factory::instance()->createModelLog($this->getModelSite(), $this->getModelRequest());
         
@@ -78,12 +85,13 @@ class Logger {
         return $result;
     }
     
-    protected function getModelSite() {
+    protected function getModelSite(): ModelSite {
         return $this->_modelSite;
     }
     
-    public function setModelSite($modelSite) {
+    public function setModelSite(ModelSite $modelSite): bool {
         $result = false;
+        
         if (is_object($modelSite) && $modelSite instanceof ModelSite) {
             $this->_modelSite = $modelSite;
             $result = true;
@@ -92,12 +100,13 @@ class Logger {
         return $result;
     }
     
-    protected function getModelRequest() {
+    protected function getModelRequest(): ModelRequest {
         return $this->_modelRequest;
     }
     
-    public function setModelRequest($modelRequest) {
+    public function setModelRequest(ModelRequest $modelRequest): bool {
         $result = false;
+        
         if (is_object($modelRequest) && $modelRequest instanceof ModelRequest) {
             $this->_modelRequest = $modelRequest;
             $result = true;

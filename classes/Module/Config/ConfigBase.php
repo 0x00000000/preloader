@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('Config.php');
@@ -10,7 +12,7 @@ class ConfigBase extends Config {
     public function __construct() {
     }
     
-    public function get($section, $name = null) {
+    public function get(string $section, string $name = null) {
         $result = null;
         
         if (
@@ -27,7 +29,7 @@ class ConfigBase extends Config {
         return $result;
     }
     
-    public function add($section, $name, $value) {
+    public function add(string $section, string $name, $value): bool {
         $result = false;
 
         if ($section && $name) {

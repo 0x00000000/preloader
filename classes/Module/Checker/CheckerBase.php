@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace preloader;
 
 include_once('Checker.php');
@@ -12,7 +14,7 @@ class CheckerBase extends Checker {
     
     protected $_modelRequest = null;
     
-    public function checkRequest() {
+    public function checkRequest(): bool {
         $result = false;
         
         $requestType = $this->_router->getRequestType();
@@ -29,7 +31,7 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    public function getCheckReports() {
+    public function getCheckReports(): array {
         $repors = $this->_checkReports;
         if (! is_array($repors)) {
             $repors = array();
@@ -38,11 +40,7 @@ class CheckerBase extends Checker {
         return $repors;
     }
     
-    public function setRouter(Router $router) {
-        $this->_router = $router;
-    }
-    
-    public function isSuspiciousRequest() {
+    public function isSuspiciousRequest(): bool {
         $isSuspicious = true;
         
         if ($this->getModelRequest()) {
@@ -62,11 +60,41 @@ class CheckerBase extends Checker {
         return $isSuspicious;
     }
     
-    protected function getAllowedScripts() {
+    public function setRouter(Router $router): bool {
+        $result = false;
+        
+        if (is_object($router) && $router instanceof Router) {
+            $this->_router = $router;
+            $result = true;
+        }
+        
+        return $result;
+    }
+    
+    protected function getRouter(): Router {
+        return $this->_router;
+    }
+    
+    public function setModelRequest(ModelRequest $modelRequest): bool {
+        $result = false;
+        
+        if (is_object($modelRequest) && $modelRequest instanceof ModelRequest) {
+            $this->_modelRequest = $modelRequest;
+            $result = true;
+        }
+        
+        return $result;
+    }
+    
+    protected function getModelRequest(): ModelRequest {
+        return $this->_modelRequest;
+    }
+    
+    protected function getAllowedScripts(): array {
         $scriptsList = Config::instance()->get('checker', 'allowedScripts');
         $rootInList = array('/');
         
-        if ($scriptsList) {
+        if ($scriptsList && is_array($scriptsList)) {
             $allowedScripts = array_merge($rootInList, $scriptsList);
         } else {
             $allowedScripts = $rootInList;
@@ -75,7 +103,7 @@ class CheckerBase extends Checker {
         return $allowedScripts;
     }
     
-    protected function checkAdminRequest() {
+    protected function checkAdminRequest(): bool {
         $result = false;
         
         if ($this->getModelRequest()) {
@@ -96,7 +124,7 @@ class CheckerBase extends Checker {
         return $result;
     }
 
-    protected function checkAjaxRequest() {
+    protected function checkAjaxRequest(): bool {
         $rules = Config::instance()->get('checker', 'rules');
         
         $result = $this->checkRequestParams($rules);
@@ -104,7 +132,7 @@ class CheckerBase extends Checker {
         return $result;
     }
 
-    protected function checkClientRequest() {
+    protected function checkClientRequest(): bool {
         $rules = Config::instance()->get('checker', 'rules');
         
         $result = $this->checkRequestParams($rules);
@@ -112,7 +140,7 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    protected function checkRequestParams($params) {
+    protected function checkRequestParams(array $params): bool {
         $result = false;
         
         if (
@@ -135,7 +163,7 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    protected function checkUrl($params) {
+    protected function checkUrl(array $params): bool {
         $result = false;
         
         if ($this->getModelRequest()) {
@@ -164,7 +192,7 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    protected function checkGet($params) {
+    protected function checkGet(array $params): bool {
         $result = true;
         
         if ($this->getModelRequest()) {
@@ -175,7 +203,7 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    protected function checkPost($params) {
+    protected function checkPost(array $params): bool {
         $result = true;
         
         if ($this->getModelRequest()) {
@@ -186,7 +214,7 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    protected function checkParams($data, $params) {
+    protected function checkParams(array $data, array $params): bool {
         $result = true;
         
         if (! is_array($data)) {
@@ -224,24 +252,10 @@ class CheckerBase extends Checker {
         return $result;
     }
     
-    protected function addCheckReport($message) {
+    protected function addCheckReport(string $message): void {
         if ($message) {
             $this->_checkReports[] = $message;
         }
-    }
-    
-    public function setModelRequest($modelRequest) {
-        $result = false;
-        if (is_object($modelRequest) && $modelRequest instanceof ModelRequest) {
-            $this->_modelRequest = $modelRequest;
-            $result = true;
-        }
-        
-        return $result;
-    }
-    
-    protected function getModelRequest() {
-        return $this->_modelRequest;
     }
     
 }
