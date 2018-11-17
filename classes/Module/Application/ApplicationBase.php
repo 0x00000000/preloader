@@ -81,13 +81,15 @@ abstract class ApplicationBase extends Application {
     
     protected function initSession(): void {
         
-        $session_name = Config::instance()->get('application', 'session_name');
-        if ($session_name) {
-            session_name($session_name);
-        }
-        
-        if (Config::instance()->get('application', 'session_start')) {
-            session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            $session_name = Config::instance()->get('application', 'session_name');
+            if ($session_name) {
+                session_name($session_name);
+            }
+            
+            if (Config::instance()->get('application', 'session_start')) {
+                session_start();
+            }
         }
         
     }
