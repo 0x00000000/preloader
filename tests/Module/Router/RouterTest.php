@@ -26,9 +26,82 @@ final class RouterTest extends TestCase {
     }
     
     public function testGetRequestType(): void {
-        $type = $this->_router->getRequestType();
         
+        $type = $this->_router->getRequestType();
         $this->assertEquals($type, Router::REQUEST_TYPE_CLIENT);
+        
+        $this->_modelRequest->url = '/index.php';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_CLIENT);
+        
+        $this->_modelRequest->url = '/index.html';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_CLIENT);
+        
+        $this->_modelRequest->url = '/section1/section2';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_CLIENT);
+        
+        $this->_modelRequest->url = '/section1/section2/';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_CLIENT);
+        
+        $this->_modelRequest->url = '/section1/ajax';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_CLIENT);
+        
+        $this->_modelRequest->url = '/section1/admin/';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_CLIENT);
+        
+        $this->_modelRequest->url = '/ajax';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_AJAX);
+        
+        $this->_modelRequest->url = '/ajax/';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_AJAX);
+        
+        $this->_modelRequest->url = '/ajax.php';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_AJAX);
+        
+        $this->_modelRequest->url = '/ajax/section';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_AJAX);
+        
+        $this->_modelRequest->url = '/ajax?test=1';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_AJAX);
+        
+        $this->_modelRequest->url = '/ajax.php?test=1';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_AJAX);
+        
+        $this->_modelRequest->url = '/admin';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_ADMIN);
+        
+        $this->_modelRequest->url = '/admin/';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_ADMIN);
+        
+        $this->_modelRequest->url = '/admin.php';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_ADMIN);
+        
+        $this->_modelRequest->url = '/admin/section';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_ADMIN);
+        
+        $this->_modelRequest->url = '/admin?test=1';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_ADMIN);
+        
+        $this->_modelRequest->url = '/admin.php?test=1';
+        $type = $this->_router->getRequestType();
+        $this->assertEquals($type, Router::REQUEST_TYPE_ADMIN);
+        
     }
     
     public function testGetSiteRoot(): void {
