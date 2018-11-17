@@ -48,14 +48,14 @@ class Logger {
     public function startErrorsLogging(): void {
         set_error_handler(function($code, $message, $file, $line, $context) {
             var_export(array($code, $message, $file, $line));
-            $this->logError('Error catched', $message, json_encode($context), $code, $file, $line);
+            $this->logError('Error catched', $message, $context, $code, $file, $line);
         });
         
         set_exception_handler(function($exception) {
             var_export($exception);
             $this->logError(
                 'Exception catched', $exception->getMessage(),
-                json_encode($exception->getTraceAsString()), $exception->getCode(),
+                $exception->getTrace(), $exception->getCode(),
                 $exception->getFile(), $exception->getLine()
             );
         });
