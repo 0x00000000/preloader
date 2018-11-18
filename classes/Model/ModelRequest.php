@@ -92,56 +92,56 @@ class ModelRequest extends ModelDatabase {
     /**
      * Gets request`s get data.
      */
-    public function getGet() {
+    public function getGet(): ?array {
         return $this->_get ? json_decode($this->_get, true) : null;
     }
     
     /**
      * Sets request`s set data.
      */
-    public function setGet($value): void {
+    public function setGet(?array $value): void {
         $this->_get = json_encode($value);
     }
     
     /**
      * Gets request`s post data.
      */
-    public function getPost() {
+    public function getPost(): ?array {
         return $this->_post ? json_decode($this->_post, true) : null;
     }
     
     /**
      * Sets request`s post data.
      */
-    public function setPost($value): void {
+    public function setPost(?array $value): void {
         $this->_post = json_encode($value);
     }
     
     /**
      * Gets request`s session data.
      */
-    public function getSession() {
+    public function getSession(): ?array {
         return $this->_session ? json_decode($this->_session, true) : null;
     }
     
     /**
      * Sets request`s session data.
      */
-    public function setSession($value): void {
+    public function setSession(?array $value): void {
         $this->_session = json_encode($value);
     }
     
     /**
      * Gets request`s headers.
      */
-    public function getHeaders() {
+    public function getHeaders(): ?array {
         return $this->_headers ? json_decode($this->_headers, true) : null;
     }
     
     /**
      * Sets request`s headers.
      */
-    public function setHeaders($value): void {
+    public function setHeaders(?array $value): void {
         $this->_headers = json_encode($value);
     }
     
