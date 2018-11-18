@@ -22,7 +22,7 @@ class Core {
     private static $_isTestMode = false;
     
     /**
-     * @var string $_namespace Script`s namespace.
+     * @var string $_namespace Script's namespace.
      */
     private static $_namespace = 'preloader\\';
     
@@ -69,9 +69,9 @@ class Core {
     }
     
     /**
-     * Loads module. Includes it`s file, bun doesn`t create objects of module`s class.
+     * Loads module. Includes it's file, bun doesn't create objects of module's class.
      * 
-     * @param string $moduleName Module`s name.
+     * @param string $moduleName Module's name.
      * @param string|null $moduleBaseName Module section name.
      * @return bool Is module was succsessfully loaded.
      */
@@ -98,9 +98,9 @@ class Core {
     }
     
     /**
-     * Loads model. Includes it`s file, bun doesn`t create objects of model`s class.
+     * Loads model. Includes it's file, bun doesn't create objects of model's class.
      * 
-     * @param string $modelName Model`s name.
+     * @param string $modelName Model's name.
      * @param string|null $moduleBaseName Module section name.
      * @return bool Is module was succsessfully loaded.
      */
@@ -121,7 +121,7 @@ class Core {
     }
     
     /**
-     * Writes error message and ends script`s execution.
+     * Writes error message and ends script's execution.
      * 
      * @param string $message Error message to be shown.
      */
@@ -135,7 +135,7 @@ class Core {
     }
     
     /**
-     * Creates necessary modules for script`s work.
+     * Creates necessary modules for script's work.
      */
     private static function init(): bool {
         $result = false;

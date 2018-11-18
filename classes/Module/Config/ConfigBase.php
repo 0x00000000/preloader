@@ -6,12 +6,24 @@ namespace preloader;
 
 include_once('Config.php');
 
+/**
+ * Stores configuration data for other modules.
+ */
 class ConfigBase extends Config {
+    /**
+     * @var array $_data Stores configuration data.
+     */
     protected $_data = array();
     
+    /**
+     * Class constructor.
+     */
     public function __construct() {
     }
     
+    /**
+     * Gets data from configuration.
+     */
     public function get(string $section, string $name = null) {
         $result = null;
         
@@ -29,6 +41,10 @@ class ConfigBase extends Config {
         return $result;
     }
     
+    /**
+     * Adds data from configuration.
+     * Existed data con't be rewrited.
+     */
     public function add(string $section, string $name, $value): bool {
         $result = false;
 

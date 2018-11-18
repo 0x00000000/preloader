@@ -4,8 +4,14 @@ namespace preloader;
 
 include_once('RouterBase.php');
 
+/**
+ * Calculates request type and if needed routes UA.
+ */
 class RouterEresus extends RouterBase {
     
+    /**
+     * Gets request type.
+     */
     public function getRequestType(): string {
         $type = false;
         
@@ -23,6 +29,9 @@ class RouterEresus extends RouterBase {
         return $type;
     }
     
+    /**
+     * Routes UA.
+     */
     public function route(): void {
         // В Eresus используются глобальные переменные.
         // Они должны быть определены здесь.

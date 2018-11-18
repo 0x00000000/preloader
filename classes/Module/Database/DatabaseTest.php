@@ -6,15 +6,31 @@ namespace preloader;
 
 include_once('Database.php');
 
+/**
+ * Allow get and save data from/in in ram. Used for unit tests.
+ */
 class DatabaseTest extends Database {
+    
+    /**
+     * @var array $_data Stores data.
+     */
     protected $_data = array();
     
+    /**
+     * Last added record's id.
+     */
     protected $_lastId = 0;
     
+    /**
+     * Class constructor.
+     */
     public function __construct() {
         
     }
     
+    /**
+     * Gets data by id.
+     */
     public function getById(string $table, string $id): ?array {
         $result = null;
         
@@ -27,6 +43,9 @@ class DatabaseTest extends Database {
         return $result;
     }
     
+    /**
+     * Gets data by key.
+     */
     public function getByKey(string $table, string $key, string $value): ?array {
         $result = null;
         
@@ -46,6 +65,9 @@ class DatabaseTest extends Database {
         return $result;
     }
     
+    /**
+     * Saves the record in the database.
+     */
     public function addRecord(string $table, array $data): ?string {
         $result = null;
         
@@ -64,11 +86,14 @@ class DatabaseTest extends Database {
         return $result;
     }
     
+    /**
+     * Updates the record in the database.
+     */
     public function updateRecord(string $table, array $data, string $primaryKey = 'id'): ?string {
         $result = null;
         
         if (is_array($data) && count($data) && array_key_exists($primaryKey, $data) && $data[$primaryKey]) {
-            // For this implementation DB we may ignore $primaryKey name and use it`s value.
+            // For this implementation DB we may ignore $primaryKey name and use it's value.
             $record = $this->getById($table, $data[$primaryKey]);
             if ($record) {
                 foreach ($data as $key => $val) {

@@ -4,8 +4,14 @@ namespace preloader;
 
 include_once('RouterBase.php');
 
+/**
+ * Calculates request type and if needed routes UA.
+ */
 class RouterJoomla extends RouterBase {
     
+    /**
+     * Gets request type.
+     */
     public function getRequestType(): string {
         $type = false;
         
@@ -21,6 +27,9 @@ class RouterJoomla extends RouterBase {
         return $type;
     }
     
+    /**
+     * Routes UA.
+     */
     public function route(): void {
         // Routing is not used.
     }

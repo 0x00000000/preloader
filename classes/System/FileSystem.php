@@ -10,14 +10,14 @@ namespace preloader;
 class FileSystem {
     
     /**
-     * @var string|null $_root File system path to script`s root directory.
+     * @var string|null $_root File system path to script's root directory.
      */
     private static $_root = null;
     
     /**
-     * Gets file system path to script`s root directory.
+     * Gets file system path to script's root directory.
      * 
-     * @return string Script`s root directory.
+     * @return string Script's root directory.
      */
     public static function getRoot(): string {
         if (! self::$_root) {

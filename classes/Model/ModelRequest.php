@@ -8,15 +8,15 @@ include_once('ModelDatabase.php');
 
 /**
  * Model request.
- * Gets and saves http request`s data.
+ * Gets and saves http request's data.
  * 
- * @property string|null $id Log`s id.
- * @property string|null $siteId Site`s id.
- * @property string|null $url Request`s url.
- * @property string|null $get Request`s get data.
- * @property string|null $post Request`s post data.
- * @property string|null $session Request`s session data.
- * @property string|null $headers Request`s headers.
+ * @property string|null $id Log's id.
+ * @property string|null $siteId Site's id.
+ * @property string|null $url Request's url.
+ * @property string|null $get Request's get data.
+ * @property string|null $post Request's post data.
+ * @property string|null $session Request's session data.
+ * @property string|null $headers Request's headers.
  * @property string|null $ip User ip.
  * @property string|null $userAgent Rser agent infoimation.
  * @property string|null $info Addititional infoimation.
@@ -90,70 +90,70 @@ class ModelRequest extends ModelDatabase {
     }
     
     /**
-     * Gets request`s get data.
+     * Gets request's get data.
      */
     public function getGet(): ?array {
         return $this->_get ? json_decode($this->_get, true) : null;
     }
     
     /**
-     * Sets request`s set data.
+     * Sets request's set data.
      */
     public function setGet(?array $value): void {
         $this->_get = json_encode($value);
     }
     
     /**
-     * Gets request`s post data.
+     * Gets request's post data.
      */
     public function getPost(): ?array {
         return $this->_post ? json_decode($this->_post, true) : null;
     }
     
     /**
-     * Sets request`s post data.
+     * Sets request's post data.
      */
     public function setPost(?array $value): void {
         $this->_post = json_encode($value);
     }
     
     /**
-     * Gets request`s session data.
+     * Gets request's session data.
      */
     public function getSession(): ?array {
         return $this->_session ? json_decode($this->_session, true) : null;
     }
     
     /**
-     * Sets request`s session data.
+     * Sets request's session data.
      */
     public function setSession(?array $value): void {
         $this->_session = json_encode($value);
     }
     
     /**
-     * Gets request`s headers.
+     * Gets request's headers.
      */
     public function getHeaders(): ?array {
         return $this->_headers ? json_decode($this->_headers, true) : null;
     }
     
     /**
-     * Sets request`s headers.
+     * Sets request's headers.
      */
     public function setHeaders(?array $value): void {
         $this->_headers = json_encode($value);
     }
     
     /**
-     * Gets request`s site model.
+     * Gets site model.
      */
     protected function getModelSite(): ModelSite {
         return $this->_modelSite;
     }
     
     /**
-     * Sets request`s site model.
+     * Sets site model.
      */
     public function setModelSite(ModelSite $modelSite): bool {
         $result = false;

@@ -6,14 +6,29 @@ namespace preloader;
 
 include_once('Checker.php');
 
+/**
+ * Checks request.
+ */
 class CheckerBase extends Checker {
     
-    protected $_router = null;
-    
+    /**
+     * @var array $_checkReports Messages with information about check of request. May be an empty array.
+     */
     protected $_checkReports = array();
     
+    /**
+     * @var Router $_router Router object.
+     */
+    protected $_router = null;
+    
+    /**
+     * @var ModelReqeust $_modelRequest Request model object.
+     */
     protected $_modelRequest = null;
     
+    /**
+     * Checks if request is allowed.
+     */
     public function checkRequest(): bool {
         $result = false;
         
@@ -31,6 +46,9 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Gets information after checking request.
+     */
     public function getCheckReports(): array {
         $repors = $this->_checkReports;
         if (! is_array($repors)) {
@@ -40,6 +58,9 @@ class CheckerBase extends Checker {
         return $repors;
     }
     
+    /**
+     * Checks if request is suspiccious.
+     */
     public function isSuspiciousRequest(): bool {
         $isSuspicious = true;
         
@@ -60,6 +81,9 @@ class CheckerBase extends Checker {
         return $isSuspicious;
     }
     
+    /**
+     * Sets router.
+     */
     public function setRouter(Router $router): bool {
         $result = false;
         
@@ -71,10 +95,16 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Gets router.
+     */
     protected function getRouter(): Router {
         return $this->_router;
     }
     
+    /**
+     * Sets request model.
+     */
     public function setModelRequest(ModelRequest $modelRequest): bool {
         $result = false;
         
@@ -86,10 +116,16 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Gets request model.
+     */
     protected function getModelRequest(): ModelRequest {
         return $this->_modelRequest;
     }
     
+    /**
+     * Gets list of allowed site scripts for direct loading.
+     */
     protected function getAllowedScripts(): array {
         $scriptsList = Config::instance()->get('checker', 'allowedScripts');
         $rootInList = array('/');
@@ -103,6 +139,9 @@ class CheckerBase extends Checker {
         return $allowedScripts;
     }
     
+    /**
+     * Checks if request to admin area is allowed.
+     */
     protected function checkAdminRequest(): bool {
         $result = false;
         
@@ -117,13 +156,16 @@ class CheckerBase extends Checker {
             ) {
                 $result = true;
             } else {
-                $this->addCheckReport('Admin request doesn`t have correct headers.');
+                $this->addCheckReport('Admin request doesn\'t have correct headers.');
             }
         }
         
         return $result;
     }
 
+    /**
+     * Checks if ajax request is allowed.
+     */
     protected function checkAjaxRequest(): bool {
         $rules = Config::instance()->get('checker', 'rules');
         
@@ -132,6 +174,9 @@ class CheckerBase extends Checker {
         return $result;
     }
 
+    /**
+     * Checks if request to client area is allowed.
+     */
     protected function checkClientRequest(): bool {
         $rules = Config::instance()->get('checker', 'rules');
         
@@ -140,6 +185,9 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Checks if request is allowed.
+     */
     protected function checkRequestParams(array $params): bool {
         $result = false;
         
@@ -163,6 +211,9 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Checks if url is allowed.
+     */
     protected function checkUrl(array $params): bool {
         $result = false;
         
@@ -183,7 +234,7 @@ class CheckerBase extends Checker {
                 foreach ($parts as $part) {
                     if (strlen($part) > $params['url']['maxPartLength']) {
                         $result = false;
-                        $this->addCheckReport('Url`s part "' . $part . '" is longer then ' . $params['url']['maxPartLength'] . ' symbols.');
+                        $this->addCheckReport('Url\'s part "' . $part . '" is longer then ' . $params['url']['maxPartLength'] . ' symbols.');
                     }
                 }
             }
@@ -192,6 +243,9 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Checks if get data is allowed.
+     */
     protected function checkGet(array $params): bool {
         $result = true;
         
@@ -203,6 +257,9 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Checks if post data is allowed.
+     */
     protected function checkPost(array $params): bool {
         $result = true;
         
@@ -214,6 +271,9 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Checks if get or post data is allowed.
+     */
     protected function checkParams(array $data, array $params): bool {
         $result = true;
         
@@ -224,7 +284,7 @@ class CheckerBase extends Checker {
             if (array_key_exists('maxParamsCount', $params)) {
                 if (count($data) > $params['maxParamsCount']) {
                         $result = false;
-                        $this->addCheckReport('Request`s data has more then ' . $params['maxParamsCount'] . ' items.');
+                        $this->addCheckReport('Request\'s data has more then ' . $params['maxParamsCount'] . ' items.');
                 }
             }
             
@@ -252,6 +312,9 @@ class CheckerBase extends Checker {
         return $result;
     }
     
+    /**
+     * Add message about check of request.
+     */
     protected function addCheckReport(string $message): void {
         if ($message) {
             $this->_checkReports[] = $message;

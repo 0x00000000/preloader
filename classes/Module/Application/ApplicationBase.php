@@ -6,6 +6,10 @@ namespace preloader;
 
 include_once('Application.php');
 
+/**
+ * Facade for other modules.
+ * Checks request and routes UA.
+ */
 abstract class ApplicationBase extends Application {
     
     protected $_router = null;
@@ -16,6 +20,9 @@ abstract class ApplicationBase extends Application {
     
     protected $_modelRequest = null;
     
+    /**
+     * Class's constructor.
+     */
     public function __construct() {
         
         error_reporting(E_ALL);
@@ -38,12 +45,15 @@ abstract class ApplicationBase extends Application {
         error_reporting(E_ALL);
     }
     
+    /**
+     * Checks request and routes UA.
+     */
     public function run(): void {
         
-        $this->logRequest();
+        $this->saveRequestIfNeeded();
         
         if (! $this->_checker->checkRequest()) {
-            $this->logUnacceptedRequest();
+            $this->saveLog();
             Core::FatalError();
         }
         
@@ -51,23 +61,29 @@ abstract class ApplicationBase extends Application {
         
     }
     
-    protected function logRequest(): void {
-        $doLogRequest = false;
+    /**
+     * Save request if it is needed.
+     */
+    protected function saveRequestIfNeeded(): void {
+        $needToSave = false;
         
         if (Config::instance()->get('application', 'log_all_requests')) {
-            $doLogRequest = true;
+            $needToSave = true;
         } else {
             if ($this->_checker->isSuspiciousRequest()) {
-                $doLogRequest = true;
+                $needToSave = true;
             }
         }
         
-        if ($doLogRequest) {
+        if ($needToSave) {
             $this->_modelRequest->save();
         }
     }
     
-    protected function logUnacceptedRequest(): void {
+    /**
+     * Save log.
+     */
+    protected function saveLog(): void {
         $description = '';
         $reports = $this->_checker->getCheckReports();
         if (is_array($reports) and count($reports)) {
@@ -79,6 +95,9 @@ abstract class ApplicationBase extends Application {
         );
     }
     
+    /**
+     * Initialise sassion.
+     */
     protected function initSession(): void {
         
         if (session_status() === PHP_SESSION_NONE) {

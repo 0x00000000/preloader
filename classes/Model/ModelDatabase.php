@@ -6,15 +6,34 @@ namespace preloader;
 
 include_once('ModelAbstract.php');
 
+/**
+ * Abstract model class that stores data in database.
+ */
 abstract class ModelDatabase extends ModelAbstract {
+    /**
+     * @var string $_table Name of database table.
+     */
     protected $_table = null;
+    
+    /**
+     * @var array $_hiddenPropsList List of protected properties that are not accessible from outside.
+     */
     protected $_hiddenPropsList = array('_table', '_hiddenPropsList', '_database');
     
+    /**
+     * Database object.
+     */
     protected $_database = null;
     
+    /**
+     * Class constructor.
+     */
     public function __construct() {
     }
     
+    /**
+     * Load object's data from database by id.
+     */
     public function loadById(string $id): bool {
         $result = false;
         
@@ -30,6 +49,9 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
+    /**
+     * Loads object's data from database by key.
+     */
     public function loadByKey(string $key, string $value): bool {
         $result = false;
         
@@ -45,6 +67,9 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
+    /**
+     * Saves object's data to database.
+     */
     public function save(): ?string {
         $result = null;
         
@@ -70,6 +95,9 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
+    /**
+     * Gets object's data as associative array.
+     */
     public function getDataAssoc(): array {
         $data = array();
         
@@ -85,6 +113,9 @@ abstract class ModelDatabase extends ModelAbstract {
         return $data;
     }
     
+    /**
+     * Sets database object.
+     */
     public function setDatabase(Database $database): bool {
         $result = false;
         if (is_object($database) && $database instanceof Database) {
@@ -95,10 +126,16 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
+    /**
+     * Sets database object.
+     */
     protected function getDatabase() {
         return $this->_database;
     }
     
+    /**
+     * Gets data for current object. This data may be used for writing to database.
+     */
     private function getDataForDB(): array {
         $data = $this->getDataAssoc();
         $dbData = array();
@@ -119,6 +156,9 @@ abstract class ModelDatabase extends ModelAbstract {
         return $dbData;
     }
     
+    /**
+     * Sets data from database to current object.
+     */
     private function setDataFromDB(array $dbData): bool {
         $result = false;
         $data = array();
@@ -155,6 +195,11 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
+    /**
+     * Some properties may be set by this magic meghod.
+     * Properties, start from "_", has only one "_" in it's name and
+     * not in _hiddenPropsList list.
+     */
     public function __set(string $name, $value): void {
         $propertyName = '_' . $name;
         if ($this->isDataProp($propertyName)) {
@@ -167,6 +212,11 @@ abstract class ModelDatabase extends ModelAbstract {
         }
     }
     
+    /**
+     * Some properties may be get by this magic meghod.
+     * Properties, start from "_", has only one "_" in their names and
+     * are not in _hiddenPropsList list.
+     */
     public function __get(string $name) {
         $result = null;
         $propertyName = '_' . $name;
@@ -183,6 +233,11 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
+    /**
+     * Checks if property is can be used from outside.
+     * Properties, start from "_", has only one "_" in their names and
+     * are not in _hiddenPropsList list.
+     */
     protected function isDataProp($propName) {
         $result = false;
         
@@ -197,6 +252,9 @@ abstract class ModelDatabase extends ModelAbstract {
         return $result;
     }
     
+    /**
+     * Adds property to _hiddenPropsList list.
+     */
     protected function addHiddenProperty($propertyName) {
         $result = false;
         if (is_string($propertyName) && strlen($propertyName) && is_array($this->_hiddenPropsList)) {
@@ -208,5 +266,5 @@ abstract class ModelDatabase extends ModelAbstract {
         
         return $result;
     }
-
+    
 }

@@ -6,14 +6,21 @@ namespace preloader;
 
 include_once('ApplicationBase.php');
 
+/**
+ * Facade for other modules.
+ * Checks request and routes UA.
+ */
 class ApplicationTest extends ApplicationBase {
     
+    /**
+     * Checks request and doesn't route UA.
+     */
     public function run(): void {
         
-        $this->logRequest();
+        $this->saveRequestIfNeeded();
         
         if (! $this->_checker->checkRequest()) {
-            $this->logUnacceptedRequest();
+            $this->saveLog();
             Core::FatalError();
         }
         

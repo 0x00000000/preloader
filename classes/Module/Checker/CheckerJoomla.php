@@ -6,6 +6,9 @@ namespace preloader;
 
 include_once('CheckerBase.php');
 
+/**
+ * Checks request.
+ */
 class CheckerJoomla extends CheckerBase {
     
 }

@@ -8,11 +8,11 @@ include_once('ModelDatabase.php');
 
 /**
  * Model request.
- * Gets and saves site`s data.
+ * Gets and saves site's data.
  * 
- * @property string|null $id Log`s id.
- * @property string|null $url Url to site`s root.
- * @property string|null $name Site`s name.
+ * @property string|null $id Log's id.
+ * @property string|null $url Url to site's root.
+ * @property string|null $name Site's name.
  */
 class ModelSite extends ModelDatabase {
     /**
@@ -41,7 +41,7 @@ class ModelSite extends ModelDatabase {
      */
     public function create(): void {
         if (array_key_exists('SERVER_NAME', $_SERVER)) {
-            $url = preg_replace('/^www\./i', '', $_SERVER['SERVER_NAME']);
+            $url = $_SERVER['SERVER_NAME'];
         } else {
             $url = self::UNKNOWN_SERVER_NAME;
         }
@@ -58,6 +58,12 @@ class ModelSite extends ModelDatabase {
      */
     public function loadByUrl(string $name): bool {
         return $this->loadByKey('url', $name);
+    }
+    
+    protected function setUrl(?string $value): void {
+        if (is_string($value)) {
+            $this->_url = preg_replace('/^www\./i', '', $value);
+        }
     }
     
 }

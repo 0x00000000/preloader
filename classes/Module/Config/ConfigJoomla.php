@@ -6,8 +6,14 @@ namespace preloader;
 
 include_once('ConfigBase.php');
 
+/**
+ * Stores configuration data for other modules.
+ */
 class ConfigJoomla extends ConfigBase {
     
+    /**
+     * @var array $_data Stores configuration data.
+     */
     protected $_data = array(
         'application' => array(
             'log_all_requests' => false,

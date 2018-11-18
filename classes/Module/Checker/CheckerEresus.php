@@ -6,8 +6,14 @@ namespace preloader;
 
 include_once('CheckerBase.php');
 
+/**
+ * Checks request.
+ */
 class CheckerEresus extends CheckerBase {
     
+    /**
+     * Checks if request to admin area is allowed.
+     */
     protected function checkAdminRequest(): bool {
         
         $result = false;

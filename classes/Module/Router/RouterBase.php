@@ -6,10 +6,19 @@ namespace preloader;
 
 include_once('Router.php');
 
+/**
+ * Calculates request type and if needed routes UA.
+ */
 abstract class RouterBase extends Router {
     
+    /**
+     * @var ModelRequest|null $_modelRequest Model request.
+     */
     protected $_modelRequest = null;
     
+    /**
+     * Gets site root path.
+     */
     public function getSiteRoot(): string {
         $dir = FileSystem::getRoot();
         $levels = Config::instance()->get('router', 'levelsToSiteRoot');
@@ -21,6 +30,9 @@ abstract class RouterBase extends Router {
         return $siteRoot;
     }
     
+    /**
+     * Sets request model.
+     */
     public function setModelRequest(ModelRequest $modelRequest): bool {
         $result = false;
         
@@ -32,6 +44,9 @@ abstract class RouterBase extends Router {
         return $result;
     }
     
+    /**
+     * Gets request model.
+     */
     protected function getModelRequest(): ModelRequest {
         return $this->_modelRequest;
     }

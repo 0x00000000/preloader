@@ -10,21 +10,21 @@ include_once('ModelDatabase.php');
  * Model log.
  * Important messages, notices and errors can be saved as logs.
  * 
- * @property string|null $id Log`s id.
- * @property string|null $siteId Site`s id.
- * @property string|null $requestId Request`s id.
- * @property int|null $level Log`s level.
- * @property string|null $message Log`s message.
- * @property string|null $description Log`s description.
- * @property array|null $data Log`s additional data.
+ * @property string|null $id Log's id.
+ * @property string|null $siteId Site's id.
+ * @property string|null $requestId Request's id.
+ * @property int|null $level Log's level.
+ * @property string|null $message Log's message.
+ * @property string|null $description Log's description.
+ * @property array|null $data Log's additional data.
  * @property int|null $code Php error level constant.
- * @property string|null $file File`s path.
+ * @property string|null $file File's path.
  * @property string|null $line Line of the file.
  * @property string|null $url Url.
  */
 class ModelLog extends ModelDatabase {
     /**
-     * Log`s levels.
+     * Log's levels.
      */
     public const LEVEL_CRITICAL = 1;
     public const LEVEL_ERROR = 2;
@@ -169,7 +169,7 @@ class ModelLog extends ModelDatabase {
     }
     
     /**
-     * Checks if log`s level is correct.
+     * Checks if log's level is correct.
      */
     protected function checkLevel(int $level): bool {
         $result = false;
@@ -189,7 +189,7 @@ class ModelLog extends ModelDatabase {
     }
     
     /**
-     * Set log`s message property.
+     * Set log's message property.
      */
     protected function setMessage(string $value): void {
         $maxMessageLength = 255;
@@ -204,7 +204,7 @@ class ModelLog extends ModelDatabase {
     }
     
     /**
-     * Set log`s url property.
+     * Set log's url property.
      */
     protected function setUrl(string $value): void {
         $maxUrlLength = 255;
@@ -219,28 +219,28 @@ class ModelLog extends ModelDatabase {
     }
     
     /**
-     * Gets log`s data property.
+     * Gets log's data property.
      */
     public function getData() {
         return $this->_data ? json_decode($this->_data, true) : null;
     }
     
     /**
-     * Sets log`s data property.
+     * Sets log's data property.
      */
     public function setData($value): void {
         $this->_data = json_encode($value);
     }
     
     /**
-     * Gets log`s site model.
+     * Gets site model.
      */
     protected function getModelSite(): ModelSite {
         return $this->_modelSite;
     }
     
     /**
-     * Sets log`s site model.
+     * Sets site model.
      */
     public function setModelSite(ModelSite $modelSite): bool {
         $result = false;
@@ -254,14 +254,14 @@ class ModelLog extends ModelDatabase {
     }
     
     /**
-     * Gets log`s request model.
+     * Gets request model.
      */
     protected function getModelRequest(): ModelRequest {
         return $this->_modelRequest;
     }
     
     /**
-     * Sets log`s request model.
+     * Sets request model.
      */
     public function setModelRequest(ModelRequest $modelRequest): bool {
         $result = false;

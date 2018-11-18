@@ -6,14 +6,30 @@ namespace preloader;
 
 include_once('FactoryAbstract.php');
 
+/**
+ * Creates modules and models.
+ * Implement singleton pattern functionality.
+ */
 abstract class FactorySingleton extends FactoryAbstract {
     
+    /**
+     * @var string $_baseType Name prefix of singleton class.
+     */
     protected static $_baseType = 'Factory';
     
+    /**
+     * @var string|null $_type Name postrix of singleton class.
+     */
     protected static $_type = null;
     
+    /**
+     * @var Config $_instance Singleton object.
+     */
     protected static $_instance = null;
     
+    /**
+     * Gets singleton object's module name.
+     */
     protected static function getModuleName(): ?string {
         $moduleName = null;
         
@@ -24,10 +40,16 @@ abstract class FactorySingleton extends FactoryAbstract {
         return $moduleName;
     }
     
+    /**
+     * Gets base module name for singleton object.
+     */
     protected static function getBaseModuleName(): string {
         return self::$_baseType;
     }
     
+    /**
+     * Sets module name postrix for singleton object.
+     */
     public static function setType(string $type): bool {
         $result = false;
         
@@ -41,6 +63,9 @@ abstract class FactorySingleton extends FactoryAbstract {
         return $result;
     }
     
+    /**
+     * Gets singleton object.
+     */
     public static function instance(): Factory {
         if (! self::$_instance && self::$_type) {
             $moduleName = self::getModuleName();
@@ -54,4 +79,5 @@ abstract class FactorySingleton extends FactoryAbstract {
         
         return self::$_instance;
     }
+    
 }

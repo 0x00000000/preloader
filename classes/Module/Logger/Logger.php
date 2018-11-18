@@ -4,15 +4,31 @@ declare(strict_types=1);
 
 namespace preloader;
 
+/**
+ * Log errors and notices. Set handlers for php errors and uncaught exceptions.
+ */
 class Logger {
+    
+    /**
+     * @var ModelSite|null $_modelSite Model site.
+     */
     protected $_modelSite = null;
     
+    /**
+     * @var ModelRequest|null $_modelRequest Model request.
+     */
     protected $_modelRequest = null;
     
+    /**
+     * Class constructor.
+     */
     public function __construct() {
         
     }
     
+    /**
+     * Logs critical error.
+     */
     public function logCritical(
         string $message, string $description = null,
         array $data = null, int $code = null,
@@ -21,6 +37,9 @@ class Logger {
         return self::logExtended('createCritical', $message, $description, $data, $code, $file, $line);
     }
     
+    /**
+     * Logs error.
+     */
     public function logError(
         string $message, string $description = null,
         array $data = null, int $code = null,
@@ -29,6 +48,9 @@ class Logger {
         return self::logExtended('createError', $message, $description, $data, $code, $file, $line);
     }
     
+    /**
+     * Logs warning.
+     */
     public function logWarning(
         string $message, string $description = null,
         array $data = null, int $code = null,
@@ -37,6 +59,9 @@ class Logger {
         return self::logExtended('createWarning', $message, $description, $data, $code, $file, $line);
     }
     
+    /**
+     * Logs notice.
+     */
     public function logNotice(
         string $message, string $description = null,
         array $data = null, int $code = null,
@@ -45,6 +70,9 @@ class Logger {
         return self::logExtended('createNotice', $message, $description, $data, $code, $file, $line);
     }
     
+    /**
+     * Set handlers for php errors and uncaught exceptions.
+     */
     public function startErrorsLogging(): void {
         set_error_handler(function($code, $message, $file, $line, $context) {
             var_export(array($code, $message, $file, $line));
@@ -61,6 +89,9 @@ class Logger {
         });
     }
     
+    /**
+     * Save log.
+     */
     protected function logExtended(
         string $methodName, string $message, string $description = null,
         array $data = null, int $code = null,
@@ -85,10 +116,16 @@ class Logger {
         return $result;
     }
     
+    /**
+     * Gets site model.
+     */
     protected function getModelSite(): ModelSite {
         return $this->_modelSite;
     }
     
+    /**
+     * Sets site model.
+     */
     public function setModelSite(ModelSite $modelSite): bool {
         $result = false;
         
@@ -100,10 +137,16 @@ class Logger {
         return $result;
     }
     
+    /**
+     * Gets request model.
+     */
     protected function getModelRequest(): ModelRequest {
         return $this->_modelRequest;
     }
     
+    /**
+     * Sets request model.
+     */
     public function setModelRequest(ModelRequest $modelRequest): bool {
         $result = false;
         
