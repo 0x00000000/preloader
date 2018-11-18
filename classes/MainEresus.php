@@ -8,10 +8,16 @@ include_once('System/Core.php');
 
 include_once('MainAbstract.php');
 
+/**
+ * Runs preloader script.
+ */
 class MainEresus extends MainAbstract {
     
     private $_application = null;
     
+    /**
+     * Runs preloader script.
+     */
     public function run(): void {
         
         Core::setApplicationType('Eresus');
