@@ -28,6 +28,32 @@ final class ModelSiteTest extends TestCase {
         $this->assertEquals($modelSite->name, ModelSite::UNKNOWN_SERVER_NAME);
     }
     
+    public function testSetUrl(): void {
+        $modelSite = Factory::instance()->createModelSite();
+        
+        $modelSite->url = 'www.example.com';
+        $this->assertEquals($modelSite->url, 'example.com');
+        
+        $modelSite->url = 'www2.example.com';
+        $this->assertEquals($modelSite->url, 'www2.example.com');
+        
+        $modelSite->url = 'test.www.example.com';
+        $this->assertEquals($modelSite->url, 'test.www.example.com');
+        
+        $modelSite->url = 'example.www.com';
+        $this->assertEquals($modelSite->url, 'example.www.com');
+        
+        $modelSite->url = '/index.php?www.example.com';
+        $this->assertEquals($modelSite->url, '/index.php?www.example.com');
+        
+        $modelSite->url = 'www/index.php?www.example.com';
+        $this->assertEquals($modelSite->url, 'www/index.php?www.example.com');
+        
+        $modelSite->url = 'example.com';
+        $this->assertEquals($modelSite->url, 'example.com');
+        
+    }
+    
     public function testDatabase(): void {
         $modelSiteSave = Factory::instance()->createModelSite();
         $modelSiteSave->create();
