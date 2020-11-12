@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Model;
+
+use Preloader\Module\Database\Database;
 
 /**
  * Abstract model class.

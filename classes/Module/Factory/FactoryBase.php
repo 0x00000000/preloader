@@ -2,9 +2,23 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Factory;
 
-include_once('Factory.php');
+use Preloader\System\Core;
+
+use Preloader\Module\Application\Application;
+use Preloader\Module\Checker\Checker;
+use Preloader\Module\Config\Config;
+use Preloader\Module\Database\Database;
+use Preloader\Module\Factory\Factory;
+use Preloader\Module\Logger\Logger;
+use Preloader\Module\Registry\Registry;
+use Preloader\Module\Router\Router;
+
+use Preloader\Model\ModelDatabase;
+use Preloader\Model\ModelLog;
+use Preloader\Model\ModelRequest;
+use Preloader\Model\ModelSite;
 
 /**
  * Creates modules and models.
@@ -67,9 +81,8 @@ abstract class FactoryBase extends Factory {
     public function createModule(string $moduleName, string $moduleBaseName = null): object {
         $result = null;
         
-        $loaded = Core::loadModule($moduleName, $moduleBaseName);
-        if ($loaded) {
-            $className = Core::getNamespace() . $moduleName;
+        $className = Core::getModuleClassName($moduleName, $moduleBaseName);
+        if (class_exists($className)) {
             $result = new $className();
         }
         
@@ -96,9 +109,8 @@ abstract class FactoryBase extends Factory {
     public function createModel(string $modelName): object {
         $result = null;
         
-        $loaded = Core::loadModel($modelName);
-        if ($loaded) {
-            $className = Core::getNamespace() . $modelName;
+        $className = Core::getModelClassName($modelName);
+        if (class_exists($className)) {
             $result = new $className();
         }
         
@@ -173,7 +185,6 @@ abstract class FactoryBase extends Factory {
      * Creates config module object.
      */
     public function createConfig(): Config {
-        Core::loadModule('Config');
         $type = $this->_moduleNamePostfix;
         Config::setType($type);
         $object = Config::instance();

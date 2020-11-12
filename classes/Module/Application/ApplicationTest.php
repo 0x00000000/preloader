@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Application;
 
-include_once('ApplicationBase.php');
+use Preloader\System\Core;
 
 /**
  * Facade for other modules.

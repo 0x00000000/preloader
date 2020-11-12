@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('ModelDatabase.php');
+namespace Preloader\Model;
 
 /**
  * Model request.
@@ -13,10 +11,10 @@ include_once('ModelDatabase.php');
  * @property string|null $id Log's id.
  * @property string|null $siteId Site's id.
  * @property string|null $url Request's url.
- * @property string|null $get Request's get data.
- * @property string|null $post Request's post data.
- * @property string|null $session Request's session data.
- * @property string|null $headers Request's headers.
+ * @property array|null $get Request's get data.
+ * @property array|null $post Request's post data.
+ * @property array|null $session Request's session data.
+ * @property array|null $headers Request's headers.
  * @property string|null $ip User ip.
  * @property string|null $userAgent Rser agent infoimation.
  * @property string|null $info Addititional infoimation.
@@ -78,9 +76,7 @@ class ModelRequest extends ModelDatabase {
         if (! empty($_SESSION)) {
             $this->_session = json_encode($_SESSION);
         }
-        if (function_exists('getallheaders')) {
-            $this->_headers = json_encode(getallheaders());
-        }
+        $this->_headers = json_encode($this->getHeadersInner());
         if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
             $this->_ip = $_SERVER['REMOTE_ADDR'];
         }
@@ -163,6 +159,20 @@ class ModelRequest extends ModelDatabase {
         }
         
         return $result;
+    }
+    
+    protected function getHeadersInner(): array {
+        if (function_exists('getallheaders')) {
+            $headers = getallheaders();
+        } else {
+           $headers = array();
+           foreach ($_SERVER as $name => $value) {
+               if (substr($name, 0, 5) == 'HTTP_') {
+                   $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+               }
+           }
+       }
+       return $headers;
     }
     
 }

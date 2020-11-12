@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Config;
 
 /**
  * Stores configuration data for other modules.

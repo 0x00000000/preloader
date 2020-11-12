@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Config;
 
-include_once('ConfigAbstract.php');
+use Preloader\System\Core;
 
 /**
  * Stores configuration data for other modules.
@@ -70,9 +70,8 @@ abstract class ConfigSingleton extends ConfigAbstract {
         if (! self::$_instance && self::$_type) {
             $moduleName = self::getModuleName();
             $baseModuleName = self::getBaseModuleName();
-            $loaded = Core::loadModule($moduleName, $baseModuleName);
-            if ($loaded) {
-                $className = Core::getNamespace() . $moduleName;
+            $className = Core::getModuleClassName($moduleName, $baseModuleName);
+            if (class_exists($className)) {
                 self::$_instance = new $className();
             }
         }

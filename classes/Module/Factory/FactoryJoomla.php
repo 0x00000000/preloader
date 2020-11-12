@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('FactoryBase.php');
+namespace Preloader\Module\Factory;
 
 /**
  * Creates modules and models.

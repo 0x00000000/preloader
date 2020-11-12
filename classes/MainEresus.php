@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader;
 
-include_once('System/Core.php');
+use Preloader\System\Core;
+use Preloader\Module\Factory\Factory;
 
-include_once('MainAbstract.php');
+include_once(dirname(__FILE__) . '/System/Core.php');
+include_once(dirname(__FILE__) . '/MainAbstract.php');
 
 /**
  * Runs preloader script.
  */
 class MainEresus extends MainAbstract {
-    
-    private $_application = null;
     
     /**
      * Runs preloader script.
@@ -22,9 +22,9 @@ class MainEresus extends MainAbstract {
         
         Core::setApplicationType('Eresus');
         
-        $this->_application = Factory::instance()->createApplication();
+        $application = Factory::instance()->createApplication();
         
-        $this->_application->run();
+        $application->run();
         
     }
     

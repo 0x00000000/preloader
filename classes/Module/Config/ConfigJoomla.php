@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('ConfigBase.php');
+namespace Preloader\Module\Config;
 
 /**
  * Stores configuration data for other modules.
@@ -22,13 +20,13 @@ class ConfigJoomla extends ConfigBase {
         ),
         'database' => array(
             'server' => 'localhost',
-            'login' => 'root',
+            'login' => 'mysql',
             'password' => '',
-            'name' => 'saitik_saitik',
+            'name' => 'saitik',
             'prefix' => 'saitik_preloader_'
         ),
         'checker' => array(
-            'admin_header_key' => 'Preloader_local',
+            'admin_header_key' => 'Preloader-Local',
             'admin_header_value' => 'local',
             'rules' => array(
                 'url' => array(

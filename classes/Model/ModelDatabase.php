@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Model;
 
-include_once('ModelAbstract.php');
+use Preloader\Module\Database\Database;
 
 /**
  * Abstract model class that stores data in database.

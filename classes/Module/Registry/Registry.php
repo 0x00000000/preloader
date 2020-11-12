@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Registry;
 
 /**
  * Allow set variables and then get them back.

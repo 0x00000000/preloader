@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Application;
 
-include_once('Application.php');
+use Preloader\System\Core;
+use Preloader\Module\Config\Config;
+use Preloader\Module\Factory\Factory;
 
 /**
  * Facade for other modules.
@@ -12,12 +14,24 @@ include_once('Application.php');
  */
 abstract class ApplicationBase extends Application {
     
+    /**
+     * @var Router $_router Router object.
+     */
     protected $_router = null;
     
+    /**
+     * @var Checker $_checker Checker object.
+     */
     protected $_checker = null;
     
+    /**
+     * @var Logger $_logger Logger object.
+     */
     protected $_logger = null;
     
+    /**
+     * @var ModelRequest $_modelRequest Request model.
+     */
     protected $_modelRequest = null;
     
     /**
@@ -42,7 +56,6 @@ abstract class ApplicationBase extends Application {
         
         $this->_checker = Factory::instance()->createChecker($this->_modelRequest, $this->_router);
         
-        error_reporting(E_ALL);
     }
     
     /**

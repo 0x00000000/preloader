@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('ModelDatabase.php');
+namespace Preloader\Model;
 
 /**
- * Model request.
+ * Model site.
  * Gets and saves site's data.
  * 
- * @property string|null $id Log's id.
+ * @property string|null $id Site's id.
  * @property string|null $url Url to site's root.
  * @property string|null $name Site's name.
  */

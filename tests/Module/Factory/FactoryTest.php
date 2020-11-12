@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace PreloaderTest\Module\Factory;
 
 use PHPUnit\Framework\TestCase;
+
+use Preloader\Module\Factory\Factory;
 
 include_once(dirname(__FILE__) . '/../../init.php');
 

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace PreloaderTest\Model;
 
 use PHPUnit\Framework\TestCase;
 
-include_once(dirname(__FILE__) . '/../init.php');
+use Preloader\Module\Factory\Factory;
+use Preloader\Model\ModelRequest;
 
-Core::loadModel('ModelRequest');
+include_once(dirname(__FILE__) . '/../init.php');
 
 final class ModelRequestTest extends TestCase {
     protected $_modelRequest = null;

@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('ModelDatabase.php');
+namespace Preloader\Model;
 
 /**
  * Model log.

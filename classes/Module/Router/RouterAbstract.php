@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Router;
+
+use Preloader\Model\ModelRequest;
 
 /**
  * Calculates request type and if needed routes UA.
@@ -35,5 +37,10 @@ abstract class RouterAbstract {
      * Sets request model.
      */
     abstract public function setModelRequest(ModelRequest $modelRequest): bool;
+    
+    /**
+     * Gets request model.
+     */
+    abstract protected function getModelRequest(): ModelRequest;
     
 }

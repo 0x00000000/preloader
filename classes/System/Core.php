@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\System;
+
+use Preloader\Module\Factory\Factory;
 
 include_once('FileSystem.php');
 
@@ -22,9 +24,9 @@ class Core {
     private static $_isTestMode = false;
     
     /**
-     * @var string $_namespace Script's namespace.
+     * @var string $_namespacePrefix Namespace prefix.
      */
-    private static $_namespace = 'preloader\\';
+    private static $_namespacePrefix = 'Preloader\\';
     
     /**
      * Sets application type.
@@ -60,64 +62,41 @@ class Core {
     }
     
     /**
-     * Gets namespace.
+     * Gets namespace prefix.
      * 
-     * @return string Current namespace.
+     * @return string Namespace prefix.
      */
-    public static function getNamespace(): string {
-        return self::$_namespace;
+    public static function getNamespacePrefix(): string {
+        return self::$_namespacePrefix;
     }
     
     /**
-     * Loads module. Includes it's file, bun doesn't create objects of module's class.
+     * Gets module class name.
      * 
      * @param string $moduleName Module's name.
      * @param string|null $moduleBaseName Module section name.
-     * @return bool Is module was succsessfully loaded.
+     * @return string|null Class name if class exists.
      */
-    public static function loadModule(string $moduleName, string $moduleBaseName = null): bool {
-        $result = false;
-        
-        if ($moduleName) {
-            if (! $moduleBaseName) {
-                $moduleBaseName = $moduleName;
-            }
-            
-            $root = FileSystem::getRoot();
-            $ds = FileSystem::getDirectorySeparator();
-            $extension = FileSystem::getScriptExtension();
-            
-            $fileName = $root . $ds . 'classes' . $ds . 'Module' . $ds . $moduleBaseName . $ds . $moduleName . $extension;
-            if (is_file($fileName)) {
-                include_once($fileName);
-                $result = true;
-            }
+    public static function getModuleClassName(string $moduleName, string $moduleBaseName = null): ?string {
+        if (! $moduleBaseName) {
+            $moduleBaseName = $moduleName;
         }
         
-        return $result;
+        $className = self::getNamespacePrefix() . 'Module\\' . $moduleBaseName . '\\' . $moduleName;
+        
+        return $className;
     }
     
     /**
-     * Loads model. Includes it's file, bun doesn't create objects of model's class.
+     * Gets model class name.
      * 
      * @param string $modelName Model's name.
-     * @param string|null $moduleBaseName Module section name.
-     * @return bool Is module was succsessfully loaded.
+     * @return string|null Class name if class exists.
      */
-    public static function loadModel(string $modelName): bool {
-        $result = false;
+    public static function getModelClassName(string $modelName): ?string {
+        $className = self::getNamespacePrefix() . 'Model\\' . $modelName;
         
-        $root = FileSystem::getRoot();
-        $ds = FileSystem::getDirectorySeparator();
-        $extension = FileSystem::getScriptExtension();
-        
-        $fileName = $root . $ds . 'classes' . $ds . 'Model' . $ds . $modelName . $extension;
-        if (is_file($fileName)) {
-            include_once($fileName);
-            $result = true;
-        }
-        
-        return $result;
+        return $className;
     }
     
     /**
@@ -140,10 +119,11 @@ class Core {
     private static function init(): bool {
         $result = false;
         
+        self::setAutoloader();
+        
         if (self::getApplicationType()) {
             $result = true;
             
-            self::loadModule('Factory');
             Factory::setType(self::getApplicationType());
             if (self::$_isTestMode) {
                 Factory::instance()->setTestMode();
@@ -159,6 +139,40 @@ class Core {
         }
         
         return $result;
+    }
+    
+    /**
+     * Register classes autoload function.
+     */
+    private static function setAutoloader(): void {
+        spl_autoload_register(function($class) {
+            $namespacesList = [
+                'PreloaderTest\\' => '/tests/',
+                'Preloader\\' => '/classes/',
+            ];
+            
+            $root = FileSystem::getRoot();
+            $ds = FileSystem::getDirectorySeparator();
+            
+            $found = false;
+            foreach ($namespacesList as $prefix => $path) {
+                $length = strlen($prefix);
+                if (strncmp($prefix, $class, $length) === 0) {
+                    $found = true;
+                    
+                    // Get the relative class name.
+                    $relativeClass = substr($class, $length);
+                    
+                    $file = $root . $path . str_replace('\\', $ds, $relativeClass) . '.php';
+                    if (file_exists($file)) {
+                        require $file;
+                    }
+                }
+            }
+            
+            if (! $found)
+                return; // Move to the next registered autoloader.
+        });
     }
     
 }

@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('Config.php');
+namespace Preloader\Module\Config;
 
 /**
  * Stores configuration data for other modules.

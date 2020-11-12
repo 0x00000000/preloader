@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace PreloaderTest\System;
 
 use PHPUnit\Framework\TestCase;
+
+use Preloader\System\Core;
 
 include_once(dirname(__FILE__) . '/../init.php');
 
@@ -14,21 +16,8 @@ final class CoreTest extends TestCase {
         $this->assertEquals(Core::getApplicationType(), 'Eresus');
     }
     
-    public function testGetNamespace(): void {
-        $this->assertEquals(Core::getNamespace(), 'preloader\\');
-    }
-    
-    public function testLoadModule(): void {
-        $this->assertTrue(Core::loadModule('Factory'));
-        $this->assertTrue(Core::loadModule('Router'));
-        $this->assertTrue(Core::loadModule('CheckerEresus', 'Checker'));
-        
-    }
-    
-    public function testLoadModel(): void {
-        $this->assertTrue(Core::loadModel('ModelSite'));
-        $this->assertTrue(Core::loadModel('ModelRequest'));
-        $this->assertTrue(Core::loadModel('ModelLog'));
+    public function testGetNamespacePrefix(): void {
+        $this->assertEquals(Core::getNamespacePrefix(), 'Preloader\\');
     }
     
 }

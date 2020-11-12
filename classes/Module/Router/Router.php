@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('RouterAbstract.php');
+namespace Preloader\Module\Router;
 
 /**
  * Calculates request type and if needed routes UA.

@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Logger;
+
+use Preloader\Module\Factory\Factory;
+use Preloader\Model\ModelRequest;
+use Preloader\Model\ModelSite;
 
 /**
  * Log errors and notices. Set handlers for php errors and uncaught exceptions.

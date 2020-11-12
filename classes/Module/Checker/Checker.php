@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('CheckerAbstract.php');
+namespace Preloader\Module\Checker;
 
 /**
  * Checks request.

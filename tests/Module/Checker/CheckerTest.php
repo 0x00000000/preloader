@@ -2,9 +2,14 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace PreloaderTest\Module\Checker;
 
 use PHPUnit\Framework\TestCase;
+
+use Preloader\Module\Checker\Checker;
+use Preloader\Module\Config\Config;
+use Preloader\Module\Factory\Factory;
+use Preloader\Model\ModelRequest;
 
 include_once(dirname(__FILE__) . '/../../init.php');
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Application;
 
 /**
  * Facade for other modules.

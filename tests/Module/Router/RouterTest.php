@@ -2,9 +2,14 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace PreloaderTest\Module\Router;
 
 use PHPUnit\Framework\TestCase;
+
+use Preloader\System\FileSystem;
+use Preloader\Module\Config\Config;
+use Preloader\Module\Factory\Factory;
+use Preloader\Module\Router\Router;
 
 include_once(dirname(__FILE__) . '/../../init.php');
 

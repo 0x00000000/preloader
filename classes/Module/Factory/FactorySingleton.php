@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Factory;
 
-include_once('FactoryAbstract.php');
+use Preloader\System\Core;
 
 /**
  * Creates modules and models.
@@ -23,7 +23,7 @@ abstract class FactorySingleton extends FactoryAbstract {
     protected static $_type = null;
     
     /**
-     * @var Config $_instance Singleton object.
+     * @var Factory $_instance Singleton object.
      */
     protected static $_instance = null;
     
@@ -70,9 +70,8 @@ abstract class FactorySingleton extends FactoryAbstract {
         if (! self::$_instance && self::$_type) {
             $moduleName = self::getModuleName();
             $baseModuleName = self::getBaseModuleName();
-            $loaded = Core::loadModule($moduleName, $baseModuleName);
-            if ($loaded) {
-                $className = Core::getNamespace() . $moduleName;
+            $className = Core::getModuleClassName($moduleName, $baseModuleName);
+            if (class_exists($className)) {
                 self::$_instance = new $className();
             }
         }

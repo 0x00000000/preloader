@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Database;
 
-include_once('Database.php');
+use Preloader\Module\Config\Config;
 
 /**
  * Allow get and save data from/in mysql database.

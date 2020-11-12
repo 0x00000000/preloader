@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Database;
 
 /**
  * Allow get and save data from/in database.

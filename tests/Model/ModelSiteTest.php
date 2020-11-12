@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace PreloaderTest\Model;
 
 use PHPUnit\Framework\TestCase;
 
-include_once(dirname(__FILE__) . '/../init.php');
+use Preloader\Module\Factory\Factory;
+use Preloader\Model\ModelSite;
 
-Core::loadModule('ModelSite');
+include_once(dirname(__FILE__) . '/../init.php');
 
 final class ModelSiteTest extends TestCase {
     

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Checker;
 
-Core::loadModule('Router');
+use Preloader\Model\ModelRequest;
+use Preloader\Module\Router\Router;
 
 /**
  * Checks request.
@@ -32,8 +33,18 @@ abstract class CheckerAbstract {
     abstract public function setRouter(Router $router): bool;
     
     /**
+     * Gets router.
+     */
+    abstract protected function getRouter(): Router;
+        
+    /**
      * Sets request model.
      */
     abstract public function setModelRequest(ModelRequest $modelRequest): bool;
+    
+    /**
+     * Gets request model.
+     */
+    abstract protected function getModelRequest(): ModelRequest;
     
 }

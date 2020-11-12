@@ -2,7 +2,21 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Factory;
+
+use Preloader\Module\Application\Application;
+use Preloader\Module\Checker\Checker;
+use Preloader\Module\Config\Config;
+use Preloader\Module\Database\Database;
+use Preloader\Module\Factory\Factory;
+use Preloader\Module\Logger\Logger;
+use Preloader\Module\Registry\Registry;
+use Preloader\Module\Router\Router;
+
+use Preloader\Model\ModelDatabase;
+use Preloader\Model\ModelLog;
+use Preloader\Model\ModelRequest;
+use Preloader\Model\ModelSite;
 
 /**
  * Creates modules and models.

@@ -1,8 +1,6 @@
 <?php
 
-namespace preloader;
-
-include_once('RouterBase.php');
+namespace Preloader\Module\Router;
 
 /**
  * Calculates request type and if needed routes UA.

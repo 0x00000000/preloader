@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace preloader;
+namespace Preloader\Module\Checker;
 
-include_once('Checker.php');
+use Preloader\Module\Config\Config;
+use Preloader\Module\Router\Router;
+use Preloader\Model\ModelRequest;
 
 /**
  * Checks request.

@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace preloader;
-
-include_once('DatabaseAbstract.php');
+namespace Preloader\Module\Database;
 
 /**
  * Allow get and save data from/in database.
